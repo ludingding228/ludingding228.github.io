@@ -7,17 +7,17 @@
   
   <title>火焰图初步实践 | 鼎鼎小筑</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="说明 环境：CentOS 6.9 主要工具：FlameGraph 目的：检测某进程中各函数的CPU的消耗情况   步骤 安装FlameGraph  1git clone git@github.com:brendangregg/FlameGraph.git`  查找将要分析的进程pid  1比如：ps -ef|grep service_name  使用Linux自带的性能分析工具perf捕获CPU堆">
+  <meta name="description" content="说明 环境：CentOS 6.9 主要工具：FlameGraph 目的：检测某进程中各函数的CPU的消耗情况   步骤 安装FlameGraph  1git clone git@github.com:brendangregg/FlameGraph.git  查找将要分析的进程pid  1比如：ps -ef|grep service_name  使用Linux自带的性能分析工具perf捕获CPU堆栈">
 <meta name="keywords" content="Python,FlameGraph">
 <meta property="og:type" content="article">
 <meta property="og:title" content="火焰图初步实践">
 <meta property="og:url" content="http://yoursite.com/2018/03/25/火焰图实践/index.html">
 <meta property="og:site_name" content="鼎鼎小筑">
-<meta property="og:description" content="说明 环境：CentOS 6.9 主要工具：FlameGraph 目的：检测某进程中各函数的CPU的消耗情况   步骤 安装FlameGraph  1git clone git@github.com:brendangregg/FlameGraph.git`  查找将要分析的进程pid  1比如：ps -ef|grep service_name  使用Linux自带的性能分析工具perf捕获CPU堆">
-<meta property="og:updated_time" content="2018-03-25T17:12:40.186Z">
+<meta property="og:description" content="说明 环境：CentOS 6.9 主要工具：FlameGraph 目的：检测某进程中各函数的CPU的消耗情况   步骤 安装FlameGraph  1git clone git@github.com:brendangregg/FlameGraph.git  查找将要分析的进程pid  1比如：ps -ef|grep service_name  使用Linux自带的性能分析工具perf捕获CPU堆栈">
+<meta property="og:updated_time" content="2018-03-25T17:19:15.833Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="火焰图初步实践">
-<meta name="twitter:description" content="说明 环境：CentOS 6.9 主要工具：FlameGraph 目的：检测某进程中各函数的CPU的消耗情况   步骤 安装FlameGraph  1git clone git@github.com:brendangregg/FlameGraph.git`  查找将要分析的进程pid  1比如：ps -ef|grep service_name  使用Linux自带的性能分析工具perf捕获CPU堆">
+<meta name="twitter:description" content="说明 环境：CentOS 6.9 主要工具：FlameGraph 目的：检测某进程中各函数的CPU的消耗情况   步骤 安装FlameGraph  1git clone git@github.com:brendangregg/FlameGraph.git  查找将要分析的进程pid  1比如：ps -ef|grep service_name  使用Linux自带的性能分析工具perf捕获CPU堆栈">
   
     <link rel="alternate" href="/atom.xml" title="鼎鼎小筑" type="application/atom+xml">
   
@@ -55,7 +55,7 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -94,13 +94,13 @@
 <hr>
 <h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ol>
 <li><p>安装FlameGraph</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone git@github.com:brendangregg/FlameGraph.git`</span><br></pre></td></tr></table></figure>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone git@github.com:brendangregg/FlameGraph.git</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>查找将要分析的进程pid</p>
  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">比如：ps -ef|grep service_name</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>使用Linux自带的性能分析工具perf捕获CPU堆栈调用数据（Capture stacks）</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">    # 以100次/每秒的频率读取pid=2917的进程的CPU调用堆栈数据，并输出结果到perf.data中</span><br><span class="line">    perf record -F 100 -p 2917 -g -- sleep 120</span><br><span class="line">    </span><br><span class="line">    # 读取并展示perf.data中的调用栈追踪数据，并输出到out.perf中</span><br><span class="line">    perf script &gt; out.perf </span><br><span class="line">    ```    </span><br><span class="line"></span><br><span class="line">4. 使用FlameGraph提供的工具stackcollapse-perf.pl，将out.perf中数据转换为可识别的单行数据（Fold stacks）</span><br></pre></td></tr></table></figure>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">    # 以100次/每秒的频率读取pid=2917的进程的CPU调用堆栈数据，并输出结果到perf.data中</span><br><span class="line">    perf record -F 100 -p 2917 -g -- sleep 120</span><br><span class="line">    </span><br><span class="line">    # 读取并展示perf.data中的调用栈追踪数据，并输出到out.perf中</span><br><span class="line">    perf script &gt; out.perf </span><br><span class="line">    ```    </span><br><span class="line"></span><br><span class="line">4. 使用FlameGraph提供的工具stackcollapse-perf.pl，将out.perf中的数据转换为可识别的单行数据（Fold stacks）</span><br></pre></td></tr></table></figure>
 <p> ./stackcollapse-perf.pl out.perf &gt; out.folded</p>
  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">5. 使用FlameGraph提供的工具flamegraph.pl，将out.folded中的数据渲染为svg文件</span><br></pre></td></tr></table></figure>
 <p> ./flamegraph.pl out.folded &gt; out.svg<br> <code>`</code></p>
@@ -113,7 +113,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/25/火焰图实践/" data-id="cjf72aso4000081nuoswuxaa7" class="article-share-link">Teilen</a>
+      <a data-url="http://yoursite.com/2018/03/25/火焰图实践/" data-id="cjf72idfh0004bbnueltb8g8s" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FlameGraph/">FlameGraph</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
@@ -126,7 +126,7 @@
   
   
     <a href="/2018/03/21/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Älter</strong>
+      <strong class="article-nav-caption">Older</strong>
       <div class="article-nav-title">Hello World</div>
     </a>
   
@@ -141,7 +141,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Kategorien</h3>
+    <h3 class="widget-title">Categories</h3>
     <div class="widget">
       <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li></ul>
     </div>
@@ -170,7 +170,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archiv</h3>
+    <h3 class="widget-title">Archives</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li></ul>
     </div>
@@ -180,7 +180,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">letzter Beitrag</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
         
