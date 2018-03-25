@@ -5,14 +5,19 @@
   
 
   
-  <title>Archives | 鼎鼎小筑</title>
+  <title>火焰图初步实践 | 鼎鼎小筑</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="鼎鼎小筑">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+  <meta name="description" content="###说明  环境：CentOS 6.9 主要工具：FlameGraph 目的：检测某进程中各函数的CPU的消耗情况   ###步骤  安装FlameGraph git clone git@github.com:brendangregg/FlameGraph.git  查找将要分析的进程pid 比如：ps -ef|grep service_name  使用Linux自带的性能分析工具perf捕获C">
+<meta name="keywords" content="Python,FlameGraph">
+<meta property="og:type" content="article">
+<meta property="og:title" content="火焰图初步实践">
+<meta property="og:url" content="http://yoursite.com/2018/03/25/火焰图实践/index.html">
 <meta property="og:site_name" content="鼎鼎小筑">
+<meta property="og:description" content="###说明  环境：CentOS 6.9 主要工具：FlameGraph 目的：检测某进程中各函数的CPU的消耗情况   ###步骤  安装FlameGraph git clone git@github.com:brendangregg/FlameGraph.git  查找将要分析的进程pid 比如：ps -ef|grep service_name  使用Linux自带的性能分析工具perf捕获C">
+<meta property="og:updated_time" content="2018-03-25T17:01:01.751Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="鼎鼎小筑">
+<meta name="twitter:title" content="火焰图初步实践">
+<meta name="twitter:description" content="###说明  环境：CentOS 6.9 主要工具：FlameGraph 目的：检测某进程中各函数的CPU的消耗情况   ###步骤  安装FlameGraph git clone git@github.com:brendangregg/FlameGraph.git  查找将要分析的进程pid 比如：ps -ef|grep service_name  使用Linux自带的性能分析工具perf捕获C">
   
     <link rel="alternate" href="/atom.xml" title="鼎鼎小筑" type="application/atom+xml">
   
@@ -59,78 +64,85 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2018/03/25/火焰图实践/" class="archive-article-date">
-  <time datetime="2018-03-25T15:29:15.000Z" itemprop="datePublished">Mar 25</time>
+        <section id="main"><article id="post-火焰图实践" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/03/25/火焰图实践/" class="article-date">
+  <time datetime="2018-03-25T15:29:15.000Z" itemprop="datePublished">2018-03-25</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/25/火焰图实践/">火焰图初步实践</a>
+    <h1 class="article-title" itemprop="name">
+      火焰图初步实践
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2018/03/21/hello-world/" class="archive-article-date">
-  <time datetime="2018-03-21T13:08:20.471Z" itemprop="datePublished">Mar 21</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/21/hello-world/">Hello World</a>
-    </h1>
-  
+        <p>###说明</p>
+<ol>
+<li>环境：CentOS 6.9</li>
+<li>主要工具：FlameGraph</li>
+<li>目的：检测某进程中各函数的CPU的消耗情况</li>
+</ol>
+<hr>
+<p>###步骤</p>
+<ol>
+<li><p>安装FlameGraph</p>
+<pre><code>git clone git@github.com:brendangregg/FlameGraph.git
+</code></pre></li>
+<li><p>查找将要分析的进程pid</p>
+<pre><code>比如：ps -ef|grep service_name
+</code></pre></li>
+<li><p>使用Linux自带的性能分析工具perf捕获CPU堆栈调用数据（Capture stacks）</p>
+<pre><code># 以100次/每秒的频率读取pid=2917的进程的CPU调用堆栈数据，并输出结果到perf.data中
+perf record -F 100 -p 2917 -g -- sleep 120
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2018/03/20/lego/" class="archive-article-date">
-  <time datetime="2018-03-20T13:14:35.000Z" itemprop="datePublished">Mar 20</time>
-</a>
+# 读取并展示perf.data中的调用栈追踪数据，并输出到out.perf中      
+perf script &gt; out.perf
+</code></pre></li>
+<li><p>使用FlameGraph提供的工具stackcollapse-perf.pl，将out.perf中数据转换为可识别的单行数据（Fold stacks）</p>
+<pre><code>./stackcollapse-perf.pl out.perf &gt; out.folded
+</code></pre></li>
+<li><p>使用FlameGraph提供的工具flamegraph.pl，将out.folded中的数据渲染为svg文件</p>
+<pre><code>./flamegraph.pl out.folded &gt; out.svg
+</code></pre></li>
+<li><p>svg文件用浏览器打开即可看到效果</p>
+<pre><code>...
+</code></pre></li>
+</ol>
+
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/20/lego/">lego</a>
-    </h1>
-  
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/03/25/火焰图实践/" data-id="cjf71wrob000229nuvuv9ksz4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FlameGraph/">FlameGraph</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
 
-    </header>
+    </footer>
   </div>
-</article>
+  
+    
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2018/03/21/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hello World</div>
+    </a>
   
+</nav>
 
+  
+</article>
 
 </section>
         
