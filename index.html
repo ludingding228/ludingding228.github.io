@@ -90,27 +90,26 @@
 </ol>
 <hr>
 <h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ol>
-<li>安装FlameGraph</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone git@github.com:brendangregg/FlameGraph.git</span><br></pre></td></tr></table></figure>
-<ol>
-<li>查找将要分析的进程pid</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">比如：$ ps -ef|grep service_name</span><br></pre></td></tr></table></figure>
-<ol>
-<li>使用Linux自带的性能分析工具perf捕获CPU堆栈调用数据（Capture stacks）</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 以100次/每秒的频率读取pid=2917的进程的CPU调用堆栈数据，并输出结果到perf.data中</span><br><span class="line">$ perf record -F 100 -p 2917 -g -- sleep 120</span><br><span class="line"># 读取并展示perf.data中的调用栈追踪数据，并输出到out.perf中</span><br><span class="line">$ perf script &gt; out.perf </span><br><span class="line">```    </span><br><span class="line"></span><br><span class="line">4. 使用FlameGraph提供的工具stackcollapse-perf.pl，将out.perf中的数据转换为可识别的单行数据（Fold stacks）</span><br></pre></td></tr></table></figure>
-<p>$ ./stackcollapse-perf.pl out.perf &gt; out.folded<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">5. 使用FlameGraph提供的工具flamegraph.pl，将out.folded中的数据渲染为svg文件</span><br></pre></td></tr></table></figure></p>
-<p>$ ./flamegraph.pl out.folded &gt; out.svg<br><code>`</code></p>
-<ol>
-<li>svg文件用浏览器打开即可看到效果<br>…</li>
+<li><p>安装FlameGraph</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone git@github.com:brendangregg/FlameGraph.git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查找将要分析的进程pid</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">比如：$ ps -ef|grep service_name</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用Linux自带的性能分析工具perf捕获CPU堆栈调用数据（Capture stacks）</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">    # 以100次/每秒的频率读取pid=2917的进程的CPU调用堆栈数据，并输出结果到perf.data中</span><br><span class="line">    $ perf record -F 100 -p 2917 -g -- sleep 120</span><br><span class="line">    # 读取并展示perf.data中的调用栈追踪数据，并输出到out.perf中</span><br><span class="line">    $ perf script &gt; out.perf </span><br><span class="line">    ```    </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">4. 使用FlameGraph提供的工具stackcollapse-perf.pl，将out.perf中的数据转换为可识别的单行数据（Fold stacks）</span><br></pre></td></tr></table></figure>
+<p> $ ./stackcollapse-perf.pl out.perf &gt; out.folded</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">5. 使用FlameGraph提供的工具flamegraph.pl，将out.folded中的数据渲染为svg文件</span><br></pre></td></tr></table></figure>
+<p> $ ./flamegraph.pl out.folded &gt; out.svg<br> <code>`</code></p>
+</li>
+<li><p>svg文件用浏览器打开即可看到效果<br> …</p>
+</li>
 </ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/25/火焰图实践/" data-id="cjf72vedz0003jfnuhavuydmt" class="article-share-link">Teilen</a>
+      <a data-url="http://yoursite.com/2018/03/25/火焰图实践/" data-id="cjf72xvd00002lnnulrt30802" class="article-share-link">Teilen</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FlameGraph/">FlameGraph</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
@@ -157,7 +156,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/21/hello-world/" data-id="cjf72ved20000jfnuvsiejjpy" class="article-share-link">Teilen</a>
+      <a data-url="http://yoursite.com/2018/03/21/hello-world/" data-id="cjf72xvdb0006lnnu8ufe64en" class="article-share-link">Teilen</a>
       
       
     </footer>
@@ -198,7 +197,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/20/lego/" data-id="cjf72vedt0001jfnupep1y4vu" class="article-share-link">Teilen</a>
+      <a data-url="http://yoursite.com/2018/03/20/lego/" data-id="cjf72xvcp0000lnnuncs1wj2p" class="article-share-link">Teilen</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/lego/">lego</a></li></ul>
