@@ -50,7 +50,7 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -91,7 +91,7 @@
 </ul>
 </li>
 <li><p>2.x默认值只绑定localhost，并且将试图绑定到IPv4和IPv6，但是只有当IPv4和IPv6只有一个可用时，es才能更好的运行；生产环境中需要配置一个newwork.host:</p>
-   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/elasticsearch --network.host 192.168.1.5bin/elasticsearch --network.host _non_loopback_</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/elasticsearch --network.host 192.168.1.5bin/elasticsearch --network.host _non_loopback_</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>Mapping changes:</p>
 <ol>
@@ -103,22 +103,22 @@
 <li><p>1.x:</p>
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET my_index/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;my_type.some_field&quot;: &quot;quick brown fox&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
+<li><p>2.x：</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">GET my_index/my_type/_search </span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;some_field&quot;: &quot;quick brown fox&quot; </span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
+<li><p>field name不要包含“.”；</p>
+</li>
+<li>type name不能以“.”开头；</li>
+<li>type name不能超过255个字符，已存在的、name超过255个字符的type可以在升级后继续使用，但是升级后不能再创建name超过255个字符的type；</li>
+<li>type mapping不能再通过API直接删除，如果要删除，应该重新indexing；如果只需要删除某type下的所有documents，可以通过delete-by-query插件实现；</li>
 </ol>
 </li>
 </ol>
 </li>
 </ul>
-<pre><code>    - 2.x：
-
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">GET my_index/my_type/_search </span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;some_field&quot;: &quot;quick brown fox&quot; </span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-5. field name不要包含“.”；
-6. type name不能以“.”开头；
-7. type name不能超过255个字符，已存在的、name超过255个字符的type可以在升级后继续使用，但是升级后不能再创建name超过255个字符的type；
-8. type mapping不能再通过API直接删除，如果要删除，应该重新indexing；如果只需要删除某type下的所有documents，可以通过delete-by-query插件实现；
-</code></pre><h3 id="两种方案："><a href="#两种方案：" class="headerlink" title="两种方案："></a>两种方案：</h3><ol>
+<h3 id="两种方案："><a href="#两种方案：" class="headerlink" title="两种方案："></a>两种方案：</h3><ol>
 <li>先升级到2.4.x，然后在升级到5.0.0</li>
 <li><p>从1.7.1直接升级到5.0.0（因为数据量不大，可选择直接升级，全量build）</p>
 <ol>
@@ -137,7 +137,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/25/ES1.7.1升级5.0.0调研/" data-id="cjfv7dwos000013nuti27l7b8" class="article-share-link">Teilen</a>
+      <a data-url="http://yoursite.com/2018/03/25/ES1.7.1升级5.0.0调研/" data-id="cjfv7fzpn00002onunfp24tfe" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li></ul>
@@ -201,7 +201,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/25/火焰图实践/" data-id="cjfv7dwpo000613nuxfs3g85f" class="article-share-link">Teilen</a>
+      <a data-url="http://yoursite.com/2018/03/25/火焰图实践/" data-id="cjfv7fzqb00042onu1pgjxpzn" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FlameGraph/">FlameGraph</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
@@ -248,7 +248,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/21/hello-world/" data-id="cjfv7dwp6000213nuph1il6ce" class="article-share-link">Teilen</a>
+      <a data-url="http://yoursite.com/2018/03/21/hello-world/" data-id="cjfv7fzpv00012onub2cf29o4" class="article-share-link">Share</a>
       
       
     </footer>
@@ -289,7 +289,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/20/lego/" data-id="cjfv7dwpk000513nu6rcszycw" class="article-share-link">Teilen</a>
+      <a data-url="http://yoursite.com/2018/03/20/lego/" data-id="cjfv7fzq500032onui37q3txg" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/lego/">lego</a></li></ul>
@@ -309,7 +309,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Kategorien</h3>
+    <h3 class="widget-title">Categories</h3>
     <div class="widget">
       <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li></ul>
     </div>
@@ -338,7 +338,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archiv</h3>
+    <h3 class="widget-title">Archives</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li></ul>
     </div>
@@ -348,7 +348,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">letzter Beitrag</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
         
