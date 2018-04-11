@@ -8,13 +8,13 @@
   <title>ES1.7.1升级5.0.0调研 | 鼎鼎小筑</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Breaking changes: 2.0:  默认的发现机制变为单播，多播需要用插件(./bin/plugin install discovery-multicast)     配置文件中必须提供一个unicast hosts的列表discovery.zen.ping.unicast.hosts: [ 192.168.1.2,  192.168.1.3 ]   2.x默认值只绑定localhos">
-<meta name="keywords" content="Python,FlameGraph">
+<meta name="keywords" content="Elasticsearch">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ES1.7.1升级5.0.0调研">
 <meta property="og:url" content="http://yoursite.com/2018/03/25/ES1.7.1升级5.0.0调研/index.html">
 <meta property="og:site_name" content="鼎鼎小筑">
 <meta property="og:description" content="Breaking changes: 2.0:  默认的发现机制变为单播，多播需要用插件(./bin/plugin install discovery-multicast)     配置文件中必须提供一个unicast hosts的列表discovery.zen.ping.unicast.hosts: [ 192.168.1.2,  192.168.1.3 ]   2.x默认值只绑定localhos">
-<meta property="og:updated_time" content="2018-04-11T14:38:50.438Z">
+<meta property="og:updated_time" content="2018-04-11T14:41:46.263Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ES1.7.1升级5.0.0调研">
 <meta name="twitter:description" content="Breaking changes: 2.0:  默认的发现机制变为单播，多播需要用插件(./bin/plugin install discovery-multicast)     配置文件中必须提供一个unicast hosts的列表discovery.zen.ping.unicast.hosts: [ 192.168.1.2,  192.168.1.3 ]   2.x默认值只绑定localhos">
@@ -55,7 +55,7 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -94,7 +94,7 @@
 </ul>
 </li>
 <li><p>2.x默认值只绑定localhost，并且将试图绑定到IPv4和IPv6，但是只有当IPv4和IPv6只有一个可用时，es才能更好的运行；生产环境中需要配置一个newwork.host:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/elasticsearch --network.host 192.168.1.5bin/elasticsearch --network.host _non_loopback_</span><br></pre></td></tr></table></figure>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/elasticsearch --network.host 192.168.1.5bin/elasticsearch --network.host _non_loopback_</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>Mapping changes:</p>
 <ol>
@@ -131,18 +131,19 @@
 <li><p>当重建索引完成后，通过如下命令，可以很快的恢复分片：</p>
  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POST _flush/synced</span><br></pre></td></tr></table></figure>
 </li>
+<li><p>关闭所有node的es服务，为每个节点升级</p>
+</li>
 </ol>
 </li>
 </ol>
-<pre><code>3. 关闭所有node的es服务，为每个节点升级
-</code></pre>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/25/ES1.7.1升级5.0.0调研/" data-id="cjfv7a5lj0000z1nu4cwp6nwp" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/03/25/ES1.7.1升级5.0.0调研/" data-id="cjfv7dwos000013nuti27l7b8" class="article-share-link">Teilen</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FlameGraph/">FlameGraph</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li></ul>
 
     </footer>
   </div>
@@ -152,7 +153,7 @@
   
   
     <a href="/2018/03/25/火焰图实践/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
+      <strong class="article-nav-caption">Älter</strong>
       <div class="article-nav-title">火焰图实践</div>
     </a>
   
@@ -167,7 +168,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
+    <h3 class="widget-title">Kategorien</h3>
     <div class="widget">
       <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li></ul>
     </div>
@@ -179,7 +180,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/FlameGraph/">FlameGraph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lego/">lego</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FlameGraph/">FlameGraph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lego/">lego</a></li></ul>
     </div>
   </div>
 
@@ -189,14 +190,14 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/FlameGraph/" style="font-size: 20px;">FlameGraph</a> <a href="/tags/Python/" style="font-size: 20px;">Python</a> <a href="/tags/lego/" style="font-size: 10px;">lego</a>
+      <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/FlameGraph/" style="font-size: 10px;">FlameGraph</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/lego/" style="font-size: 10px;">lego</a>
     </div>
   </div>
 
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
+    <h3 class="widget-title">Archiv</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li></ul>
     </div>
@@ -206,7 +207,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">letzter Beitrag</h3>
     <div class="widget">
       <ul>
         
