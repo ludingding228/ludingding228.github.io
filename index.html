@@ -50,7 +50,7 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -60,6 +60,60 @@
 </header>
       <div class="outer">
         <section id="main">
+  
+    <article id="post-ES" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/04/11/ES/" class="article-date">
+  <time datetime="2018-04-11T15:31:39.692Z" itemprop="datePublished">2018-04-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="最近sentry频现一个报错："><a href="#最近sentry频现一个报错：" class="headerlink" title="最近sentry频现一个报错："></a>最近sentry频现一个报错：</h4><blockquote>
+<p>TransportError(500, ‘SearchPhaseExecutionException[Failed to execute phase [query], all shards failed; shardFailures {[sTjRYf4YTxS9dwBIKOmpSQ][tale][0]: RemoteTransportException[[bj2-storm03][inet[/10.81.10.15:9300]][indices:data/read/search[phase/query]]]; nested: QueryPhaseExecutionException[[tale][0]: query[filtered(ConstantScore(BooleanFilter(+cache(is_frozen: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x00) +cache(sea_type: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x06))))-&gt;cache(_type:lead)],from[0],size[20],sort[&lt;custom:”update_time”: org.elasticsearch.index.fielddata.fieldcomparator.LongValuesComparatorSource@4cb3edbd&gt;!]: Query Failed [Failed to execute main query]]; nested: ElasticsearchException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: UncheckedExecutionException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: NumberFormatException[Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; }{[nzPbm4moSmafvJAPhBZxFg][tale][1]: QueryPhaseExecutionException[[tale][1]: query[filtered(ConstantScore(BooleanFilter(+cache(is_frozen: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x00) +cache(sea_type: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x06))))-&gt;cache(_type:lead)],from[0],size[20],sort[&lt;custom:”update_time”: org.elasticsearch.index.fielddata.fieldcomparator.LongValuesComparatorSource@e7463d2&gt;!]: Query Failed [Failed to execute main query]]; nested: ElasticsearchException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: UncheckedExecutionException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: NumberFormatException[Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; }{[sTjRYf4YTxS9dwBIKOmpSQ][tale][2]: RemoteTransportException[[bj2-storm03][inet[/10.81.10.15:9300]][indices:data/read/search[phase/query]]]; nested: QueryPhaseExecutionException[[tale][2]: query[filtered(ConstantScore(BooleanFilter(+cache(is_frozen: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x00) +cache(sea_type: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x06))))-&gt;cache(_type:lead)],from[0],size[20],sort[&lt;custom:”update_time”: org.elasticsearch.index.fielddata.fieldcomparator.LongValuesComparatorSource@62817996&gt;!]: Query Failed [Failed to execute main query]]; nested: ElasticsearchException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: UncheckedExecutionException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: NumberFormatException[Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; }{[sTjRYf4YTxS9dwBIKOmpSQ][tale][3]: RemoteTransportException[[bj2-storm03][inet[/10.81.10.15:9300]][indices:data/read/search[phase/query]]]; nested: QueryPhaseExecutionException[[tale][3]: query[filtered(ConstantScore(BooleanFilter(+cache(is_frozen: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x00) +cache(sea_type: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x06))))-&gt;cache(_type:lead)],from[0],size[20],sort[&lt;custom:”update_time”: org.elasticsearch.index.fielddata.fieldcomparator.LongValuesComparatorSource@7de52fa4&gt;!]: Query Failed [Failed to execute main query]]; nested: ElasticsearchException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: UncheckedExecutionException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: NumberFormatException[Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; }{[sTjRYf4YTxS9dwBIKOmpSQ][tale][4]: RemoteTransportException[[bj2-storm03][inet[/10.81.10.15:9300]][indices:data/read/search[phase/query]]]; nested: QueryPhaseExecutionException[[tale][4]: query[filtered(ConstantScore(BooleanFilter(+cache(is_frozen: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x00…</p>
+</blockquote>
+<p>解决过程如下：</p>
+<ol>
+<li>错误发生场景：<ul>
+<li>搜索lead，并通过“最新更新时间”、“最早更新时间”排序时</li>
+</ul>
+</li>
+<li><p>解决步骤：</p>
+<ol>
+<li><p>根据报错推断，应该是update_time数据格式或类型出现异常</p>
+<ul>
+<li>查看tale的_mapping，发现lead和lead_taomi的update_time是integer，而opportunity的update_time是long，而ES要求同名field的type必须一致。<br>幸亏opportunity虽然进了ES，但是并没有实际使用，所以以为会愉快的解决问题——直接删除opportunity这个type~，悲剧的是，同样的错误继续报。。</li>
+</ul>
+</li>
+<li><p>ES中删除数据时并不是真的删除数据，只是将数据的found标记为false，当下次搜索时，那些found被标记为false的数据还是会被搜索到，只是ES呈现给我们结果时将这部分数据剔除掉，所以继续报相同的错误是理所当然；</p>
+</li>
+<li><p>ES中的数据是存储在一个个segment中的，ES在后台会根据Lucene的合并规则定期进行segment merging操作，被标记删除的数据在segment合并时才会真正删除掉。如果要马上解决这个报错的话，需要手动强制进行segment merging操作（curl -XPOST “<a href="http://localhost:9200/tale/_optimize?only_expunge_deletes=true①&amp;wait_for_completion=true②”），" target="_blank" rel="noopener">http://localhost:9200/tale/_optimize?only_expunge_deletes=true①&amp;wait_for_completion=true②”），</a></p>
+</li>
+<li><p>但是这个操作据说极耗CPU和磁盘I/O，所以在下班后做了该操作，负载确实较之前高了10倍，且整个过程持续了22分钟。至此解决。</p>
+</li>
+</ol>
+</li>
+</ol>
+<p>参考：</p>
+<p><em>①<a href="https://www.elastic.co/guide/en/elasticsearch/reference/1.7/indices-optimize.html#optimize-parameters" target="_blank" rel="noopener">https://www.elastic.co/guide/en/elasticsearch/reference/1.7/indices-optimize.html#optimize-parameters</a></em></p>
+<p><em>②<a href="https://github.com/elastic/elasticsearch/issues/9638" target="_blank" rel="noopener">https://github.com/elastic/elasticsearch/issues/9638</a></em></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/04/11/ES/" data-id="cjfv9685o0000x4nu3mw06cg8" class="article-share-link">Teilen</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
   
     <article id="post-火焰图实践" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -113,7 +167,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/25/火焰图实践/" data-id="cjfv8r7tx0007qznua7gwsdpr" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/03/25/火焰图实践/" data-id="cjfv9687e000ex4nuheln5lus" class="article-share-link">Teilen</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FlameGraph/">FlameGraph</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
@@ -160,7 +214,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/21/hello-world/" data-id="cjfv8r7to0005qznuxicr2s7n" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/03/21/hello-world/" data-id="cjfv9685w0001x4nuav12lo27" class="article-share-link">Teilen</a>
       
       
     </footer>
@@ -201,7 +255,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/20/lego/" data-id="cjfv8r7tu0006qznubuouz92y" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/03/20/lego/" data-id="cjfv9686h0005x4nuga9wt1u4" class="article-share-link">Teilen</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/lego/">lego</a></li></ul>
@@ -255,7 +309,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/21/PG热迁移问题/" data-id="cjfv8r7sw0000qznu4uj62kpw" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/21/PG热迁移问题/" data-id="cjfv968660003x4nu2ksgathr" class="article-share-link">Teilen</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Postgres/">Postgres</a></li></ul>
@@ -343,7 +397,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/08/13/ES1.7.1升级5.0.0调研/" data-id="cjfv8r7t90002qznu3ob0hui2" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/08/13/ES1.7.1升级5.0.0调研/" data-id="cjfv968630002x4nurfo7tvzl" class="article-share-link">Teilen</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li></ul>
@@ -363,7 +417,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
+    <h3 class="widget-title">Kategorien</h3>
     <div class="widget">
       <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li></ul>
     </div>
@@ -392,9 +446,9 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
+    <h3 class="widget-title">Archiv</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li></ul>
     </div>
   </div>
 
@@ -402,9 +456,13 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">letzter Beitrag</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/04/11/ES/">(no title)</a>
+          </li>
         
           <li>
             <a href="/2018/03/25/火焰图实践/">火焰图实践</a>
@@ -420,10 +478,6 @@
         
           <li>
             <a href="/2017/11/21/PG热迁移问题/">PG热迁移问题解决过程</a>
-          </li>
-        
-          <li>
-            <a href="/2017/08/13/ES1.7.1升级5.0.0调研/">ES1.7.1升级5.0.0调研</a>
           </li>
         
       </ul>
