@@ -7,17 +7,17 @@
   
   <title>PG热迁移问题解决过程 | 鼎鼎小筑</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="说明 具体参考：http://www.jianshu.com/p/2d07339774c0 遇到问题：当配置完从库，然后启动时发生如下错误：  “FATAL:  requested WAL segment 0000000800002A0000000000 has already been removed”    原因 PostgreSQL的流复制的原理是通过传递主机(master)上的wal日志信">
+  <meta name="description" content="说明 具体参考：http://www.jianshu.com/p/2d07339774c0 遇到问题：当配置完从库，然后启动时发生如下错误：  “FATAL:  requested WAL segment 0000000800002A0000000000 has already been removed”   原因 PostgreSQL的流复制的原理是通过传递主机(master)上的wal日志信息">
 <meta name="keywords" content="Postgres">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PG热迁移问题解决过程">
 <meta property="og:url" content="http://yoursite.com/2017/11/21/PG热迁移问题/index.html">
 <meta property="og:site_name" content="鼎鼎小筑">
-<meta property="og:description" content="说明 具体参考：http://www.jianshu.com/p/2d07339774c0 遇到问题：当配置完从库，然后启动时发生如下错误：  “FATAL:  requested WAL segment 0000000800002A0000000000 has already been removed”    原因 PostgreSQL的流复制的原理是通过传递主机(master)上的wal日志信">
-<meta property="og:updated_time" content="2018-04-11T15:07:00.993Z">
+<meta property="og:description" content="说明 具体参考：http://www.jianshu.com/p/2d07339774c0 遇到问题：当配置完从库，然后启动时发生如下错误：  “FATAL:  requested WAL segment 0000000800002A0000000000 has already been removed”   原因 PostgreSQL的流复制的原理是通过传递主机(master)上的wal日志信息">
+<meta property="og:updated_time" content="2018-04-11T15:15:46.536Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PG热迁移问题解决过程">
-<meta name="twitter:description" content="说明 具体参考：http://www.jianshu.com/p/2d07339774c0 遇到问题：当配置完从库，然后启动时发生如下错误：  “FATAL:  requested WAL segment 0000000800002A0000000000 has already been removed”    原因 PostgreSQL的流复制的原理是通过传递主机(master)上的wal日志信">
+<meta name="twitter:description" content="说明 具体参考：http://www.jianshu.com/p/2d07339774c0 遇到问题：当配置完从库，然后启动时发生如下错误：  “FATAL:  requested WAL segment 0000000800002A0000000000 has already been removed”   原因 PostgreSQL的流复制的原理是通过传递主机(master)上的wal日志信息">
   
     <link rel="alternate" href="/atom.xml" title="鼎鼎小筑" type="application/atom+xml">
   
@@ -89,9 +89,7 @@
         <h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><ol>
 <li>具体参考：<a href="http://www.jianshu.com/p/2d07339774c0" target="_blank" rel="noopener">http://www.jianshu.com/p/2d07339774c0</a></li>
 <li><p>遇到问题：当配置完从库，然后启动时发生如下错误：</p>
-<blockquote>
-<p>“FATAL:  requested WAL segment 0000000800002A0000000000 has already been removed”</p>
-</blockquote>
+<p> <em>“FATAL:  requested WAL segment 0000000800002A0000000000 has already been removed”</em></p>
 </li>
 </ol>
 <h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><ol>
@@ -100,19 +98,15 @@
 </ol>
 <ul>
 <li><p>官方对wal_keep_segments的解释：</p>
-<blockquote>
-<p>Specifies the minimum number of past log file segments kept in the pg_xlog directory, in case a standby server needs to fetch them for streaming replication. Each segment is normally 16 megabytes. If a standby server connected to the sending server falls behind by more than wal_keep_segments segments, the sending server might remove a WAL segment still needed by the standby, in which case the replication connection will be terminated. Downstream connections will also eventually fail as a result. (However, the standby server can recover by fetching the segment from archive, if WAL archiving is in use.)</p>
-</blockquote>
-<blockquote>
-<p>This sets only the minimum number of segments retained in pg_xlog; the system might need to retain more segments for WAL archival or to recover from a checkpoint. If wal_keep_segments is zero (the default), the system doesn’t keep any extra segments for standby purposes, so the number of old WAL segments available to standby servers is a function of the location of the previous checkpoint and status of WAL archiving. This parameter can only be set in the postgresql.conf file or on the server command line.</p>
-</blockquote>
+<p>  <em>Specifies the minimum number of past log file segments kept in the pg_xlog directory, in case a standby server needs to fetch them for streaming replication. Each segment is normally 16 megabytes. If a standby server connected to the sending server falls behind by more than wal_keep_segments segments, the sending server might remove a WAL segment still needed by the standby, in which case the replication connection will be terminated. Downstream connections will also eventually fail as a result. (However, the standby server can recover by fetching the segment from archive, if WAL archiving is in use.)</em></p>
+<p>  <em>This sets only the minimum number of segments retained in pg_xlog; the system might need to retain more segments for WAL archival or to recover from a checkpoint. If wal_keep_segments is zero (the default), the system doesn’t keep any extra segments for standby purposes, so the number of old WAL segments available to standby servers is a function of the location of the previous checkpoint and status of WAL archiving. This parameter can only be set in the postgresql.conf file or on the server command line.</em></p>
 </li>
 </ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/21/PG热迁移问题/" data-id="cjfv7ulta000g3xnukep6t913" class="article-share-link">Teilen</a>
+      <a data-url="http://yoursite.com/2017/11/21/PG热迁移问题/" data-id="cjfv8euda0000jrnup24ef085" class="article-share-link">Teilen</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Postgres/">Postgres</a></li></ul>
@@ -188,11 +182,11 @@
       <ul>
         
           <li>
-            <a href="/2018/03/25/ES1.7.1升级5.0.0调研/">ES1.7.1升级5.0.0调研</a>
+            <a href="/2018/03/25/火焰图实践/">火焰图实践</a>
           </li>
         
           <li>
-            <a href="/2018/03/25/火焰图实践/">火焰图实践</a>
+            <a href="/2018/03/25/ES1.7.1升级5.0.0调研/">ES1.7.1升级5.0.0调研</a>
           </li>
         
           <li>
