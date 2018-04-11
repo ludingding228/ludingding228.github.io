@@ -14,7 +14,7 @@
 <meta property="og:url" content="http://yoursite.com/2018/03/25/ES1.7.1升级5.0.0调研/index.html">
 <meta property="og:site_name" content="鼎鼎小筑">
 <meta property="og:description" content="Breaking changes: 2.0:  默认的发现机制变为单播，多播需要用插件(./bin/plugin install discovery-multicast)     配置文件中必须提供一个unicast hosts的列表discovery.zen.ping.unicast.hosts: [ 192.168.1.2,  192.168.1.3 ]   2.x默认值只绑定localhos">
-<meta property="og:updated_time" content="2018-04-11T14:37:35.896Z">
+<meta property="og:updated_time" content="2018-04-11T14:38:50.438Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ES1.7.1升级5.0.0调研">
 <meta name="twitter:description" content="Breaking changes: 2.0:  默认的发现机制变为单播，多播需要用插件(./bin/plugin install discovery-multicast)     配置文件中必须提供一个unicast hosts的列表discovery.zen.ping.unicast.hosts: [ 192.168.1.2,  192.168.1.3 ]   2.x默认值只绑定localhos">
@@ -55,7 +55,7 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -106,22 +106,22 @@
 <li><p>1.x:</p>
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET my_index/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;my_type.some_field&quot;: &quot;quick brown fox&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>2.x：</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">GET my_index/my_type/_search </span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;some_field&quot;: &quot;quick brown fox&quot; </span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
 </ul>
 </li>
-<li><p>field name不要包含“.”；</p>
-</li>
-<li>type name不能以“.”开头；</li>
-<li>type name不能超过255个字符，已存在的、name超过255个字符的type可以在升级后继续使用，但是升级后不能再创建name超过255个字符的type；</li>
-<li>type mapping不能再通过API直接删除，如果要删除，应该重新indexing；如果只需要删除某type下的所有documents，可以通过delete-by-query插件实现；</li>
 </ol>
 </li>
 </ol>
 </li>
 </ul>
-<h3 id="两种方案："><a href="#两种方案：" class="headerlink" title="两种方案："></a>两种方案：</h3><ol>
+<pre><code>    - 2.x：
+
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">GET my_index/my_type/_search </span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;some_field&quot;: &quot;quick brown fox&quot; </span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+5. field name不要包含“.”；
+6. type name不能以“.”开头；
+7. type name不能超过255个字符，已存在的、name超过255个字符的type可以在升级后继续使用，但是升级后不能再创建name超过255个字符的type；
+8. type mapping不能再通过API直接删除，如果要删除，应该重新indexing；如果只需要删除某type下的所有documents，可以通过delete-by-query插件实现；
+</code></pre><h3 id="两种方案："><a href="#两种方案：" class="headerlink" title="两种方案："></a>两种方案：</h3><ol>
 <li>先升级到2.4.x，然后在升级到5.0.0</li>
 <li><p>从1.7.1直接升级到5.0.0（因为数据量不大，可选择直接升级，全量build）</p>
 <ol>
@@ -139,7 +139,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/25/ES1.7.1升级5.0.0调研/" data-id="cjfv78y3j0000xpnu4mbii3un" class="article-share-link">Teilen</a>
+      <a data-url="http://yoursite.com/2018/03/25/ES1.7.1升级5.0.0调研/" data-id="cjfv7a5lj0000z1nu4cwp6nwp" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FlameGraph/">FlameGraph</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
@@ -152,7 +152,7 @@
   
   
     <a href="/2018/03/25/火焰图实践/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Älter</strong>
+      <strong class="article-nav-caption">Older</strong>
       <div class="article-nav-title">火焰图实践</div>
     </a>
   
@@ -167,7 +167,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Kategorien</h3>
+    <h3 class="widget-title">Categories</h3>
     <div class="widget">
       <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li></ul>
     </div>
@@ -196,7 +196,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archiv</h3>
+    <h3 class="widget-title">Archives</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li></ul>
     </div>
@@ -206,7 +206,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">letzter Beitrag</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
         
