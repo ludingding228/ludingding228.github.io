@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>ES1.7.1升级5.0.0调研 | 鼎鼎小筑</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Breaking changes: 2.0:  默认的发现机制变为单播，多播需要用插件(./bin/plugin install discovery-multicast)     配置文件中必须提供一个unicast hosts的列表discovery.zen.ping.unicast.hosts: [ 192.168.1.2,  192.168.1.3 ]   2.x默认值只绑定localhos">
+<meta name="keywords" content="Elasticsearch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ES1.7.1升级5.0.0调研">
+<meta property="og:url" content="http://yoursite.com/2017/08/13/ES1.7.1升级5.0.0调研/index.html">
+<meta property="og:site_name" content="鼎鼎小筑">
+<meta property="og:description" content="Breaking changes: 2.0:  默认的发现机制变为单播，多播需要用插件(./bin/plugin install discovery-multicast)     配置文件中必须提供一个unicast hosts的列表discovery.zen.ping.unicast.hosts: [ 192.168.1.2,  192.168.1.3 ]   2.x默认值只绑定localhos">
+<meta property="og:updated_time" content="2018-04-11T15:18:39.946Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ES1.7.1升级5.0.0调研">
+<meta name="twitter:description" content="Breaking changes: 2.0:  默认的发现机制变为单播，多播需要用插件(./bin/plugin install discovery-multicast)     配置文件中必须提供一个unicast hosts的列表discovery.zen.ping.unicast.hosts: [ 192.168.1.2,  192.168.1.3 ]   2.x默认值只绑定localhos">
+  
+    <link rel="alternate" href="/atom.xml" title="鼎鼎小筑" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">鼎鼎小筑</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-ES1.7.1升级5.0.0调研" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/08/13/ES1.7.1升级5.0.0调研/" class="article-date">
+  <time datetime="2017-08-13T07:29:15.000Z" itemprop="datePublished">2017-08-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ES1.7.1升级5.0.0调研
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="Breaking-changes"><a href="#Breaking-changes" class="headerlink" title="Breaking changes:"></a>Breaking changes:</h3><ul>
+<li><p>2.0:</p>
+<ol>
+<li>默认的发现机制变为单播，多播需要用插件(./bin/plugin install discovery-multicast)    <ul>
+<li>配置文件中必须提供一个unicast hosts的列表discovery.zen.ping.unicast.hosts: [ 192.168.1.2,  192.168.1.3 ]</li>
+</ul>
+</li>
+<li><p>2.x默认值只绑定localhost，并且将试图绑定到IPv4和IPv6，但是只有当IPv4和IPv6只有一个可用时，es才能更好的运行；生产环境中需要配置一个newwork.host:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/elasticsearch --network.host 192.168.1.5bin/elasticsearch --network.host _non_loopback_</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Mapping changes:</p>
+<ol>
+<li>动态增加field前，必须通过master node的mapping确认，这样可以避免在同一个index，且不同的shards中，为相同的field(field name相同)增添不同的mapping；这种有冲突的mapping可能会导致es返回错误的结果，且有可能导致进行错误的indexing；这样经常添加新的field，可能导致indexing过程变慢，但安全为上吧；</li>
+<li>直到解决了mapping的冲突，indexing才能继续；废除了Ignore_conflicts，conflict将不能再被忽略；</li>
+<li>field需要通过full path方式来引用，比如必须用person.name，而不是直接用name，这样可以避免混淆；</li>
+<li><p>不同types但具有相同name的field，以前在query中需要通过type.name的形式进行区分，2.x之后只需要在url中增加type就可以了，例如：</p>
+<ul>
+<li><p>1.x:</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET my_index/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;my_type.some_field&quot;: &quot;quick brown fox&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>2.x：</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">GET my_index/my_type/_search </span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;some_field&quot;: &quot;quick brown fox&quot; </span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>field name不要包含“.”；</p>
+</li>
+<li>type name不能以“.”开头；</li>
+<li>type name不能超过255个字符，已存在的、name超过255个字符的type可以在升级后继续使用，但是升级后不能再创建name超过255个字符的type；</li>
+<li>type mapping不能再通过API直接删除，如果要删除，应该重新indexing；如果只需要删除某type下的所有documents，可以通过delete-by-query插件实现；</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+<h3 id="两种方案："><a href="#两种方案：" class="headerlink" title="两种方案："></a>两种方案：</h3><ol>
+<li>先升级到2.4.x，然后在升级到5.0.0</li>
+<li><p>从1.7.1直接升级到5.0.0（因为数据量不大，可选择直接升级，全量build）</p>
+<ol>
+<li><p>当关闭一个node时，es的数据分配进程会立即把这个node的shard复制到集群的其他node，这样会占用大量的I/O，所以可以先关闭默认的分配进程：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">PUT _cluster/settings</span><br><span class="line">&#123;</span><br><span class="line">    &quot;persistent&quot;: </span><br><span class="line">        &#123;</span><br><span class="line">            &quot;cluster.routing.allocation.enable&quot;: &quot;none”</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当重建索引完成后，通过如下命令，可以很快的恢复分片：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POST _flush/synced</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>关闭所有node的es服务，为每个节点升级</p>
+</li>
+</ol>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/08/13/ES1.7.1升级5.0.0调研/" data-id="cjfv8pfsb0000ponudb4v8gui" class="article-share-link">Teilen</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/11/21/PG热迁移问题/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          PG热迁移问题解决过程
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FlameGraph/">FlameGraph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Postgres/">Postgres</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lego/">lego</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/FlameGraph/" style="font-size: 10px;">FlameGraph</a> <a href="/tags/Postgres/" style="font-size: 10px;">Postgres</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/lego/" style="font-size: 10px;">lego</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/03/25/火焰图实践/">火焰图实践</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/21/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/20/lego/">lego</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/21/PG热迁移问题/">PG热迁移问题解决过程</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/13/ES1.7.1升级5.0.0调研/">ES1.7.1升级5.0.0调研</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 鲁觐<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
