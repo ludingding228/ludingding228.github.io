@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>ES1.7.1升级5.0.0调研 | 鼎鼎小筑</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="最近sentry频现一个报错： TransportError(500, ‘SearchPhaseExecutionException[Failed to execute phase [query], all shards failed; shardFailures {[sTjRYf4YTxS9dwBIKOmpSQ][tale][0]: RemoteTransportException[[bj2-s">
+<meta name="keywords" content="Elasticsearch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ES1.7.1升级5.0.0调研">
+<meta property="og:url" content="http://yoursite.com/2017/10/21/ES/index.html">
+<meta property="og:site_name" content="鼎鼎小筑">
+<meta property="og:description" content="最近sentry频现一个报错： TransportError(500, ‘SearchPhaseExecutionException[Failed to execute phase [query], all shards failed; shardFailures {[sTjRYf4YTxS9dwBIKOmpSQ][tale][0]: RemoteTransportException[[bj2-s">
+<meta property="og:updated_time" content="2018-04-11T15:33:08.461Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ES1.7.1升级5.0.0调研">
+<meta name="twitter:description" content="最近sentry频现一个报错： TransportError(500, ‘SearchPhaseExecutionException[Failed to execute phase [query], all shards failed; shardFailures {[sTjRYf4YTxS9dwBIKOmpSQ][tale][0]: RemoteTransportException[[bj2-s">
+  
+    <link rel="alternate" href="/atom.xml" title="鼎鼎小筑" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">鼎鼎小筑</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-ES" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/10/21/ES/" class="article-date">
+  <time datetime="2017-10-21T15:23:51.000Z" itemprop="datePublished">2017-10-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ES1.7.1升级5.0.0调研
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="最近sentry频现一个报错："><a href="#最近sentry频现一个报错：" class="headerlink" title="最近sentry频现一个报错："></a>最近sentry频现一个报错：</h4><blockquote>
+<p>TransportError(500, ‘SearchPhaseExecutionException[Failed to execute phase [query], all shards failed; shardFailures {[sTjRYf4YTxS9dwBIKOmpSQ][tale][0]: RemoteTransportException[[bj2-storm03][inet[/10.81.10.15:9300]][indices:data/read/search[phase/query]]]; nested: QueryPhaseExecutionException[[tale][0]: query[filtered(ConstantScore(BooleanFilter(+cache(is_frozen: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x00) +cache(sea_type: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x06))))-&gt;cache(_type:lead)],from[0],size[20],sort[&lt;custom:”update_time”: org.elasticsearch.index.fielddata.fieldcomparator.LongValuesComparatorSource@4cb3edbd&gt;!]: Query Failed [Failed to execute main query]]; nested: ElasticsearchException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: UncheckedExecutionException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: NumberFormatException[Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; }{[nzPbm4moSmafvJAPhBZxFg][tale][1]: QueryPhaseExecutionException[[tale][1]: query[filtered(ConstantScore(BooleanFilter(+cache(is_frozen: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x00) +cache(sea_type: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x06))))-&gt;cache(_type:lead)],from[0],size[20],sort[&lt;custom:”update_time”: org.elasticsearch.index.fielddata.fieldcomparator.LongValuesComparatorSource@e7463d2&gt;!]: Query Failed [Failed to execute main query]]; nested: ElasticsearchException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: UncheckedExecutionException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: NumberFormatException[Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; }{[sTjRYf4YTxS9dwBIKOmpSQ][tale][2]: RemoteTransportException[[bj2-storm03][inet[/10.81.10.15:9300]][indices:data/read/search[phase/query]]]; nested: QueryPhaseExecutionException[[tale][2]: query[filtered(ConstantScore(BooleanFilter(+cache(is_frozen: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x00) +cache(sea_type: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x06))))-&gt;cache(_type:lead)],from[0],size[20],sort[&lt;custom:”update_time”: org.elasticsearch.index.fielddata.fieldcomparator.LongValuesComparatorSource@62817996&gt;!]: Query Failed [Failed to execute main query]]; nested: ElasticsearchException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: UncheckedExecutionException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: NumberFormatException[Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; }{[sTjRYf4YTxS9dwBIKOmpSQ][tale][3]: RemoteTransportException[[bj2-storm03][inet[/10.81.10.15:9300]][indices:data/read/search[phase/query]]]; nested: QueryPhaseExecutionException[[tale][3]: query[filtered(ConstantScore(BooleanFilter(+cache(is_frozen: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x00) +cache(sea_type: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x06))))-&gt;cache(_type:lead)],from[0],size[20],sort[&lt;custom:”update_time”: org.elasticsearch.index.fielddata.fieldcomparator.LongValuesComparatorSource@7de52fa4&gt;!]: Query Failed [Failed to execute main query]]; nested: ElasticsearchException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: UncheckedExecutionException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: NumberFormatException[Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; }{[sTjRYf4YTxS9dwBIKOmpSQ][tale][4]: RemoteTransportException[[bj2-storm03][inet[/10.81.10.15:9300]][indices:data/read/search[phase/query]]]; nested: QueryPhaseExecutionException[[tale][4]: query[filtered(ConstantScore(BooleanFilter(+cache(is_frozen: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x00…</p>
+</blockquote>
+<p>解决过程如下：</p>
+<ol>
+<li>错误发生场景：<ul>
+<li>搜索lead，并通过“最新更新时间”、“最早更新时间”排序时</li>
+</ul>
+</li>
+<li><p>解决步骤：</p>
+<ol>
+<li><p>根据报错推断，应该是update_time数据格式或类型出现异常</p>
+<ul>
+<li>查看tale的_mapping，发现lead和lead_taomi的update_time是integer，而opportunity的update_time是long，而ES要求同名field的type必须一致。<br>幸亏opportunity虽然进了ES，但是并没有实际使用，所以以为会愉快的解决问题——直接删除opportunity这个type~，悲剧的是，同样的错误继续报。。</li>
+</ul>
+</li>
+<li><p>ES中删除数据时并不是真的删除数据，只是将数据的found标记为false，当下次搜索时，那些found被标记为false的数据还是会被搜索到，只是ES呈现给我们结果时将这部分数据剔除掉，所以继续报相同的错误是理所当然；</p>
+</li>
+<li><p>ES中的数据是存储在一个个segment中的，ES在后台会根据Lucene的合并规则定期进行segment merging操作，被标记删除的数据在segment合并时才会真正删除掉。如果要马上解决这个报错的话，需要手动强制进行segment merging操作（curl -XPOST “<a href="http://localhost:9200/tale/_optimize?only_expunge_deletes=true①&amp;wait_for_completion=true②”），" target="_blank" rel="noopener">http://localhost:9200/tale/_optimize?only_expunge_deletes=true①&amp;wait_for_completion=true②”），</a></p>
+</li>
+<li><p>但是这个操作据说极耗CPU和磁盘I/O，所以在下班后做了该操作，负载确实较之前高了10倍，且整个过程持续了22分钟。至此解决。</p>
+</li>
+</ol>
+</li>
+</ol>
+<p>参考：</p>
+<p><em>①<a href="https://www.elastic.co/guide/en/elasticsearch/reference/1.7/indices-optimize.html#optimize-parameters" target="_blank" rel="noopener">https://www.elastic.co/guide/en/elasticsearch/reference/1.7/indices-optimize.html#optimize-parameters</a></em></p>
+<p><em>②<a href="https://github.com/elastic/elasticsearch/issues/9638" target="_blank" rel="noopener">https://github.com/elastic/elasticsearch/issues/9638</a></em></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/10/21/ES/" data-id="cjfv97zee0000yjnugwvqjjaz" class="article-share-link">Teilen</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/11/21/PG热迁移问题/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          PG热迁移问题解决过程
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/08/13/ES1.7.1升级5.0.0调研/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">ES1.7.1升级5.0.0调研</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FlameGraph/">FlameGraph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Postgres/">Postgres</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lego/">lego</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Elasticsearch/" style="font-size: 20px;">Elasticsearch</a> <a href="/tags/FlameGraph/" style="font-size: 10px;">FlameGraph</a> <a href="/tags/Postgres/" style="font-size: 10px;">Postgres</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/lego/" style="font-size: 10px;">lego</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/03/25/火焰图实践/">火焰图实践</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/21/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/20/lego/">lego</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/21/PG热迁移问题/">PG热迁移问题解决过程</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/21/ES/">ES1.7.1升级5.0.0调研</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 鲁觐<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
