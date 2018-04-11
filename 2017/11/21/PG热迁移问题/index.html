@@ -7,17 +7,17 @@
   
   <title>PG热迁移问题解决过程 | 鼎鼎小筑</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="说明 具体参考：http://www.jianshu.com/p/2d07339774c0 遇到问题：当配置完从库，然后启动时发生如下错误：  “FATAL:  requested WAL segment 0000000800002A0000000000 has already been removed”   原因 PostgreSQL的流复制的原理是通过传递主机(master)上的wal日志信息">
+  <meta name="description" content="说明 迁移过程参考：http://www.jianshu.com/p/2d07339774c0 遇到问题：当配置完从库，然后启动时发生如下错误：  “FATAL:  requested WAL segment 0000000800002A0000000000 has already been removed”   原因 PostgreSQL的流复制的原理是通过传递主机(master)上的wal日志">
 <meta name="keywords" content="Postgres">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PG热迁移问题解决过程">
 <meta property="og:url" content="http://yoursite.com/2017/11/21/PG热迁移问题/index.html">
 <meta property="og:site_name" content="鼎鼎小筑">
-<meta property="og:description" content="说明 具体参考：http://www.jianshu.com/p/2d07339774c0 遇到问题：当配置完从库，然后启动时发生如下错误：  “FATAL:  requested WAL segment 0000000800002A0000000000 has already been removed”   原因 PostgreSQL的流复制的原理是通过传递主机(master)上的wal日志信息">
-<meta property="og:updated_time" content="2018-04-11T15:15:46.536Z">
+<meta property="og:description" content="说明 迁移过程参考：http://www.jianshu.com/p/2d07339774c0 遇到问题：当配置完从库，然后启动时发生如下错误：  “FATAL:  requested WAL segment 0000000800002A0000000000 has already been removed”   原因 PostgreSQL的流复制的原理是通过传递主机(master)上的wal日志">
+<meta property="og:updated_time" content="2018-04-11T15:17:15.807Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PG热迁移问题解决过程">
-<meta name="twitter:description" content="说明 具体参考：http://www.jianshu.com/p/2d07339774c0 遇到问题：当配置完从库，然后启动时发生如下错误：  “FATAL:  requested WAL segment 0000000800002A0000000000 has already been removed”   原因 PostgreSQL的流复制的原理是通过传递主机(master)上的wal日志信息">
+<meta name="twitter:description" content="说明 迁移过程参考：http://www.jianshu.com/p/2d07339774c0 遇到问题：当配置完从库，然后启动时发生如下错误：  “FATAL:  requested WAL segment 0000000800002A0000000000 has already been removed”   原因 PostgreSQL的流复制的原理是通过传递主机(master)上的wal日志">
   
     <link rel="alternate" href="/atom.xml" title="鼎鼎小筑" type="application/atom+xml">
   
@@ -87,7 +87,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><ol>
-<li>具体参考：<a href="http://www.jianshu.com/p/2d07339774c0" target="_blank" rel="noopener">http://www.jianshu.com/p/2d07339774c0</a></li>
+<li>迁移过程参考：<a href="http://www.jianshu.com/p/2d07339774c0" target="_blank" rel="noopener">http://www.jianshu.com/p/2d07339774c0</a></li>
 <li><p>遇到问题：当配置完从库，然后启动时发生如下错误：</p>
 <p> <em>“FATAL:  requested WAL segment 0000000800002A0000000000 has already been removed”</em></p>
 </li>
@@ -106,7 +106,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/21/PG热迁移问题/" data-id="cjfv8euda0000jrnup24ef085" class="article-share-link">Teilen</a>
+      <a data-url="http://yoursite.com/2017/11/21/PG热迁移问题/" data-id="cjfv8nkbq0005o7nueb2t07i3" class="article-share-link">Teilen</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Postgres/">Postgres</a></li></ul>
@@ -182,11 +182,11 @@
       <ul>
         
           <li>
-            <a href="/2018/03/25/火焰图实践/">火焰图实践</a>
+            <a href="/2018/03/25/ES1.7.1升级5.0.0调研/">ES1.7.1升级5.0.0调研</a>
           </li>
         
           <li>
-            <a href="/2018/03/25/ES1.7.1升级5.0.0调研/">ES1.7.1升级5.0.0调研</a>
+            <a href="/2018/03/25/火焰图实践/">火焰图实践</a>
           </li>
         
           <li>
