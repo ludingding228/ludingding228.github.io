@@ -50,7 +50,7 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -137,7 +137,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/25/ES1.7.1升级5.0.0调研/" data-id="cjfv7fzpn00002onunfp24tfe" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/03/25/ES1.7.1升级5.0.0调研/" data-id="cjfv7hmyu00023xnupng4wrfa" class="article-share-link">Teilen</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li></ul>
@@ -201,7 +201,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/25/火焰图实践/" data-id="cjfv7fzqb00042onu1pgjxpzn" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/03/25/火焰图实践/" data-id="cjfv7hmza00063xnu7norckvc" class="article-share-link">Teilen</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FlameGraph/">FlameGraph</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
@@ -248,7 +248,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/21/hello-world/" data-id="cjfv7fzpv00012onub2cf29o4" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/03/21/hello-world/" data-id="cjfv7hmyk00003xnuoqul9mty" class="article-share-link">Teilen</a>
       
       
     </footer>
@@ -289,10 +289,70 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/20/lego/" data-id="cjfv7fzq500032onui37q3txg" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/03/20/lego/" data-id="cjfv7hmz000043xnuoqntph51" class="article-share-link">Teilen</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/lego/">lego</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-PG热迁移问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/21/PG热迁移问题/" class="article-date">
+  <time datetime="2017-11-21T12:19:15.000Z" itemprop="datePublished">2017-11-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/21/PG热迁移问题/">PG热迁移问题解决过程</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><ol>
+<li>具体参考：<a href="http://www.jianshu.com/p/2d07339774c0" target="_blank" rel="noopener">http://www.jianshu.com/p/2d07339774c0</a></li>
+<li><p>遇到问题：当配置完从库，然后启动时发生如下错误：</p>
+<blockquote>
+<p>“FATAL:  requested WAL segment 0000000800002A0000000000 has already been removed”</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><ol>
+<li>PostgreSQL的流复制的原理是通过传递主机(master)上的wal日志信息到备机(slave)然后恢复，这中间就有一个潜在的问题，如果主机端比较忙，wal日志被覆盖了，而从机可能因为网络或者其他原因没有接收到该日志，就会造成主从不一致，这时主从就断了，并且在主机端留下很多的流复制错误信息；通常这种情况不影响主库的使用，但如果有在备机上做一些查询，就需要注意了。出现了这个问题，需要到归档的日志文件里把文件拷贝到备机的pg_xlog下面。 如果主机的wal日志已经循环覆盖了，而且没有做wal的归档，那出现这种情况只能重新做流复制了；</li>
+<li>在重新做流复制的时候，我也调大了postgresql.conf中wal_keep_segments的值（wal_keep_segments=16）</li>
+</ol>
+<ul>
+<li><p>官方对wal_keep_segments的解释：</p>
+<blockquote>
+<p>Specifies the minimum number of past log file segments kept in the pg_xlog directory, in case a standby server needs to fetch them for streaming replication. Each segment is normally 16 megabytes. If a standby server connected to the sending server falls behind by more than wal_keep_segments segments, the sending server might remove a WAL segment still needed by the standby, in which case the replication connection will be terminated. Downstream connections will also eventually fail as a result. (However, the standby server can recover by fetching the segment from archive, if WAL archiving is in use.)</p>
+</blockquote>
+<blockquote>
+<p>This sets only the minimum number of segments retained in pg_xlog; the system might need to retain more segments for WAL archival or to recover from a checkpoint. If wal_keep_segments is zero (the default), the system doesn’t keep any extra segments for standby purposes, so the number of old WAL segments available to standby servers is a function of the location of the previous checkpoint and status of WAL archiving. This parameter can only be set in the postgresql.conf file or on the server command line.</p>
+</blockquote>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/11/21/PG热迁移问题/" data-id="cjfv7ulta000g3xnukep6t913" class="article-share-link">Teilen</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Postgres/">Postgres</a></li></ul>
 
     </footer>
   </div>
@@ -309,7 +369,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
+    <h3 class="widget-title">Kategorien</h3>
     <div class="widget">
       <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li></ul>
     </div>
@@ -321,7 +381,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FlameGraph/">FlameGraph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lego/">lego</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FlameGraph/">FlameGraph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Postgres/">Postgres</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lego/">lego</a></li></ul>
     </div>
   </div>
 
@@ -331,16 +391,16 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/FlameGraph/" style="font-size: 10px;">FlameGraph</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/lego/" style="font-size: 10px;">lego</a>
+      <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/FlameGraph/" style="font-size: 10px;">FlameGraph</a> <a href="/tags/Postgres/" style="font-size: 10px;">Postgres</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/lego/" style="font-size: 10px;">lego</a>
     </div>
   </div>
 
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
+    <h3 class="widget-title">Archiv</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li></ul>
     </div>
   </div>
 
@@ -348,7 +408,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">letzter Beitrag</h3>
     <div class="widget">
       <ul>
         
@@ -366,6 +426,10 @@
         
           <li>
             <a href="/2018/03/20/lego/">lego</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/21/PG热迁移问题/">PG热迁移问题解决过程</a>
           </li>
         
       </ul>
