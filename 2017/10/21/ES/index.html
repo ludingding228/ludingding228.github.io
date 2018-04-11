@@ -5,19 +5,19 @@
   
 
   
-  <title>ES1.7.1升级5.0.0调研 | 鼎鼎小筑</title>
+  <title>ES数据类型错误问题解决 | 鼎鼎小筑</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="最近sentry频现一个报错：TransportError(500, &amp;apos;SearchPhaseExecutionException[Failed to execute phase [query], all shards failed; shardFailures {[sTjRYf4YTxS9dwBIKOmpSQ][tale][0]: RemoteTransportException[[b">
+  <meta name="description" content="最近sentry频现一个报错：TransportError(500, ‘SearchPhaseExecutionException[Failed to execute phase [query], all shards failed; shardFailures {[sTjRYf4YTxS9dwBIKOmpSQ][tale][0]: RemoteTransportException[[bj2-st">
 <meta name="keywords" content="Elasticsearch">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ES1.7.1升级5.0.0调研">
+<meta property="og:title" content="ES数据类型错误问题解决">
 <meta property="og:url" content="http://yoursite.com/2017/10/21/ES/index.html">
 <meta property="og:site_name" content="鼎鼎小筑">
-<meta property="og:description" content="最近sentry频现一个报错：TransportError(500, &amp;apos;SearchPhaseExecutionException[Failed to execute phase [query], all shards failed; shardFailures {[sTjRYf4YTxS9dwBIKOmpSQ][tale][0]: RemoteTransportException[[b">
-<meta property="og:updated_time" content="2018-04-11T15:34:28.706Z">
+<meta property="og:description" content="最近sentry频现一个报错：TransportError(500, ‘SearchPhaseExecutionException[Failed to execute phase [query], all shards failed; shardFailures {[sTjRYf4YTxS9dwBIKOmpSQ][tale][0]: RemoteTransportException[[bj2-st">
+<meta property="og:updated_time" content="2018-04-11T15:40:35.033Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ES1.7.1升级5.0.0调研">
-<meta name="twitter:description" content="最近sentry频现一个报错：TransportError(500, &amp;apos;SearchPhaseExecutionException[Failed to execute phase [query], all shards failed; shardFailures {[sTjRYf4YTxS9dwBIKOmpSQ][tale][0]: RemoteTransportException[[b">
+<meta name="twitter:title" content="ES数据类型错误问题解决">
+<meta name="twitter:description" content="最近sentry频现一个报错：TransportError(500, ‘SearchPhaseExecutionException[Failed to execute phase [query], all shards failed; shardFailures {[sTjRYf4YTxS9dwBIKOmpSQ][tale][0]: RemoteTransportException[[bj2-st">
   
     <link rel="alternate" href="/atom.xml" title="鼎鼎小筑" type="application/atom+xml">
   
@@ -78,7 +78,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      ES1.7.1升级5.0.0调研
+      ES数据类型错误问题解决
     </h1>
   
 
@@ -86,8 +86,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="最近sentry频现一个报错："><a href="#最近sentry频现一个报错：" class="headerlink" title="最近sentry频现一个报错："></a>最近sentry频现一个报错：</h4><pre><code>TransportError(500, &apos;SearchPhaseExecutionException[Failed to execute phase [query], all shards failed; shardFailures {[sTjRYf4YTxS9dwBIKOmpSQ][tale][0]: RemoteTransportException[[bj2-storm03][inet[/10.81.10.15:9300]][indices:data/read/search[phase/query]]]; nested: QueryPhaseExecutionException[[tale][0]: query[filtered(ConstantScore(BooleanFilter(+cache(is_frozen: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x00) +cache(sea_type: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x06))))-&gt;cache(_type:lead)],from[0],size[20],sort[&lt;custom:&quot;update_time&quot;: org.elasticsearch.index.fielddata.fieldcomparator.LongValuesComparatorSource@4cb3edbd&gt;!]: Query Failed [Failed to execute main query]]; nested: ElasticsearchException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: UncheckedExecutionException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: NumberFormatException[Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; }{[nzPbm4moSmafvJAPhBZxFg][tale][1]: QueryPhaseExecutionException[[tale][1]: query[filtered(ConstantScore(BooleanFilter(+cache(is_frozen: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x00) +cache(sea_type: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x06))))-&gt;cache(_type:lead)],from[0],size[20],sort[&lt;custom:&quot;update_time&quot;: org.elasticsearch.index.fielddata.fieldcomparator.LongValuesComparatorSource@e7463d2&gt;!]: Query Failed [Failed to execute main query]]; nested: ElasticsearchException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: UncheckedExecutionException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: NumberFormatException[Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; }{[sTjRYf4YTxS9dwBIKOmpSQ][tale][2]: RemoteTransportException[[bj2-storm03][inet[/10.81.10.15:9300]][indices:data/read/search[phase/query]]]; nested: QueryPhaseExecutionException[[tale][2]: query[filtered(ConstantScore(BooleanFilter(+cache(is_frozen: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x00) +cache(sea_type: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x06))))-&gt;cache(_type:lead)],from[0],size[20],sort[&lt;custom:&quot;update_time&quot;: org.elasticsearch.index.fielddata.fieldcomparator.LongValuesComparatorSource@62817996&gt;!]: Query Failed [Failed to execute main query]]; nested: ElasticsearchException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: UncheckedExecutionException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: NumberFormatException[Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; }{[sTjRYf4YTxS9dwBIKOmpSQ][tale][3]: RemoteTransportException[[bj2-storm03][inet[/10.81.10.15:9300]][indices:data/read/search[phase/query]]]; nested: QueryPhaseExecutionException[[tale][3]: query[filtered(ConstantScore(BooleanFilter(+cache(is_frozen: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x00) +cache(sea_type: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x06))))-&gt;cache(_type:lead)],from[0],size[20],sort[&lt;custom:&quot;update_time&quot;: org.elasticsearch.index.fielddata.fieldcomparator.LongValuesComparatorSource@7de52fa4&gt;!]: Query Failed [Failed to execute main query]]; nested: ElasticsearchException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: UncheckedExecutionException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: NumberFormatException[Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; }{[sTjRYf4YTxS9dwBIKOmpSQ][tale][4]: RemoteTransportException[[bj2-storm03][inet[/10.81.10.15:9300]][indices:data/read/search[phase/query]]]; nested: QueryPhaseExecutionException[[tale][4]: query[filtered(ConstantScore(BooleanFilter(+cache(is_frozen: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x00...
-</code></pre><p>解决过程如下：</p>
+        <h4 id="最近sentry频现一个报错："><a href="#最近sentry频现一个报错：" class="headerlink" title="最近sentry频现一个报错："></a>最近sentry频现一个报错：</h4><blockquote><p>TransportError(500, ‘SearchPhaseExecutionException[Failed to execute phase [query], all shards failed; shardFailures {[sTjRYf4YTxS9dwBIKOmpSQ][tale][0]: RemoteTransportException[[bj2-storm03][inet[/10.81.10.15:9300]][indices:data/read/search[phase/query]]]; nested: QueryPhaseExecutionException[[tale][0]: query[filtered(ConstantScore(BooleanFilter(+cache(is_frozen: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x00) +cache(sea_type: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x06))))-&gt;cache(_type:lead)],from[0],size[20],sort[&lt;custom:”update_time”: org.elasticsearch.index.fielddata.fieldcomparator.LongValuesComparatorSource@4cb3edbd&gt;!]: Query Failed [Failed to execute main query]]; nested: ElasticsearchException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: UncheckedExecutionException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: NumberFormatException[Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; }{[nzPbm4moSmafvJAPhBZxFg][tale][1]: QueryPhaseExecutionException[[tale][1]: query[filtered(ConstantScore(BooleanFilter(+cache(is_frozen: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x00) +cache(sea_type: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x06))))-&gt;cache(_type:lead)],from[0],size[20],sort[&lt;custom:”update_time”: org.elasticsearch.index.fielddata.fieldcomparator.LongValuesComparatorSource@e7463d2&gt;!]: Query Failed [Failed to execute main query]]; nested: ElasticsearchException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: UncheckedExecutionException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: NumberFormatException[Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; }{[sTjRYf4YTxS9dwBIKOmpSQ][tale][2]: RemoteTransportException[[bj2-storm03][inet[/10.81.10.15:9300]][indices:data/read/search[phase/query]]]; nested: QueryPhaseExecutionException[[tale][2]: query[filtered(ConstantScore(BooleanFilter(+cache(is_frozen: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x00) +cache(sea_type: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x06))))-&gt;cache(_type:lead)],from[0],size[20],sort[&lt;custom:”update_time”: org.elasticsearch.index.fielddata.fieldcomparator.LongValuesComparatorSource@62817996&gt;!]: Query Failed [Failed to execute main query]]; nested: ElasticsearchException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: UncheckedExecutionException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: NumberFormatException[Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; }{[sTjRYf4YTxS9dwBIKOmpSQ][tale][3]: RemoteTransportException[[bj2-storm03][inet[/10.81.10.15:9300]][indices:data/read/search[phase/query]]]; nested: QueryPhaseExecutionException[[tale][3]: query[filtered(ConstantScore(BooleanFilter(+cache(is_frozen: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x00) +cache(sea_type: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x06))))-&gt;cache(_type:lead)],from[0],size[20],sort[&lt;custom:”update_time”: org.elasticsearch.index.fielddata.fieldcomparator.LongValuesComparatorSource@7de52fa4&gt;!]: Query Failed [Failed to execute main query]]; nested: ElasticsearchException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: UncheckedExecutionException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: NumberFormatException[Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; }{[sTjRYf4YTxS9dwBIKOmpSQ][tale][4]: RemoteTransportException[[bj2-storm03][inet[/10.81.10.15:9300]][indices:data/read/search[phase/query]]]; nested: QueryPhaseExecutionException[[tale][4]: query[filtered(ConstantScore(BooleanFilter(+cache(is_frozen: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x00…</p>
+</blockquote>
+<p>解决过程如下：</p>
 <ol>
 <li>错误发生场景：<ul>
 <li>搜索lead，并通过“最新更新时间”、“最早更新时间”排序时</li>
@@ -116,7 +117,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/10/21/ES/" data-id="cjfv99q9o0000zvnueywdfke1" class="article-share-link">Teilen</a>
+      <a data-url="http://yoursite.com/2017/10/21/ES/" data-id="cjfv9bbd2000016nu3i547mem" class="article-share-link">Teilen</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li></ul>
@@ -213,7 +214,7 @@
           </li>
         
           <li>
-            <a href="/2017/10/21/ES/">ES1.7.1升级5.0.0调研</a>
+            <a href="/2017/10/21/ES/">ES数据类型错误问题解决</a>
           </li>
         
       </ul>
