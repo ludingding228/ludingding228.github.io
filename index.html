@@ -1,487 +1,788 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  
+    <!-- title -->
 
-  
-  <title>鼎鼎小筑</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="鼎鼎小筑">
-<meta property="og:url" content="http://yoursite.com/index.html">
-<meta property="og:site_name" content="鼎鼎小筑">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="鼎鼎小筑">
-  
-    <link rel="alternate" href="/atom.xml" title="鼎鼎小筑" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  <link rel="stylesheet" href="/css/style.css">
+
+
+
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+    <meta name="description" content="">
+    <title>鼎鼎小筑</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s 1;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href= /css/style.css?v=20180317 as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" type="text/css" href= /css/mobile.css?v=20180317 media="(max-width: 980px)"/>
+        
+    <link rel="icon" href= /assets/favicon.ico>
+    <script>
+        (function (w) {
+            "use strict";
+            // rel=preload support test
+            if (!w.loadCSS) {
+                w.loadCSS = function () { };
+            }
+            // define on the loadCSS obj
+            var rp = loadCSS.relpreload = {};
+            // rel=preload feature support test
+            // runs once and returns a function for compat purposes
+            rp.support = (function () {
+                var ret;
+                try {
+                    ret = w.document.createElement("link").relList.supports("preload");
+                } catch (e) {
+                    ret = false;
+                }
+                return function () {
+                    return ret;
+                };
+            })();
+
+            // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+            // then change that media back to its intended value on load
+            rp.bindMediaToggle = function (link) {
+                // remember existing media attr for ultimate state, or default to 'all'
+                var finalMedia = link.media || "all";
+
+                function enableStylesheet() {
+                    link.media = finalMedia;
+                }
+
+                // bind load handlers to enable media
+                if (link.addEventListener) {
+                    link.addEventListener("load", enableStylesheet);
+                } else if (link.attachEvent) {
+                    link.attachEvent("onload", enableStylesheet);
+                }
+
+                // Set rel and non-applicable media type to start an async request
+                // note: timeout allows this to happen async to let rendering continue in IE
+                setTimeout(function () {
+                    link.rel = "stylesheet";
+                    link.media = "only x";
+                });
+                // also enable media after 3 seconds,
+                // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+                setTimeout(enableStylesheet, 3000);
+            };
+
+            // loop through link elements in DOM
+            rp.poly = function () {
+                // double check this to prevent external calls from running
+                if (rp.support()) {
+                    return;
+                }
+                var links = w.document.getElementsByTagName("link");
+                for (var i = 0; i < links.length; i++) {
+                    var link = links[i];
+                    // qualify links to those with rel=preload and as=style attrs
+                    if (link.rel === "preload" && link.getAttribute("as") === "style" && !link.getAttribute("data-loadcss")) {
+                        // prevent rerunning on link
+                        link.setAttribute("data-loadcss", true);
+                        // bind listeners to toggle media back
+                        rp.bindMediaToggle(link);
+                    }
+                }
+            };
+
+            // if unsupported, run the polyfill
+            if (!rp.support()) {
+                // run once at least
+                rp.poly();
+
+                // rerun poly on an interval until onload
+                var run = w.setInterval(rp.poly, 500);
+                if (w.addEventListener) {
+                    w.addEventListener("load", function () {
+                        rp.poly();
+                        w.clearInterval(run);
+                    });
+                } else if (w.attachEvent) {
+                    w.attachEvent("onload", function () {
+                        rp.poly();
+                        w.clearInterval(run);
+                    });
+                }
+            }
+            // commonjs
+            if (typeof exports !== "undefined") {
+                exports.loadCSS = loadCSS;
+            }
+            else {
+                w.loadCSS = loadCSS;
+            }
+        }(typeof global !== "undefined" ? global : this));
+    </script>
+    <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js" defer></script>
+    <script src="/scripts/main.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
 </head>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">鼎鼎小筑</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
-      </div>
-    </div>
-  </div>
+    
+        <body class="home-body">
+    
+    
+<header class="header index-header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <a class="home-link" href=/>鼎鼎小筑</a>
 </header>
-      <div class="outer">
-        <section id="main">
-  
-    <article id="post-火焰图实践" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/03/25/火焰图实践/" class="article-date">
-  <time datetime="2018-03-25T15:29:15.000Z" itemprop="datePublished">2018-03-25</time>
-</a>
+    <div class="wrapper">
+        <div class="site-intro" style=
+
+
+
+
+
+
+
+
+height:50vh;
+
+>
     
-  </div>
-  <div class="article-inner">
+    <!-- 主页  -->
     
     
-      <header class="article-header">
+    <!-- 文章页  -->
+            
+    <div class="site-intro-img" style="background-image: url(/intro/WechatIMG155.jpeg)"></div>
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            鼎鼎小筑
+            <!-- 文章页  -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+                ...
+            
+            <!-- 文章页  -->
+            
+        </p>
+        <!-- 文章页meta -->
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/25/火焰图实践/">火焰图实践</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><ol>
-<li>环境：CentOS 6.9</li>
-<li>主要工具：FlameGraph</li>
-<li>目的：检测某进程中各函数的CPU的消耗情况</li>
-</ol>
-<hr>
-<h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ol>
-<li><p>安装FlameGraph</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone git@github.com:brendangregg/FlameGraph.git</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查找将要分析的进程pid</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">比如：$ ps -ef|grep service_name</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>使用Linux自带的性能分析工具perf捕获CPU堆栈调用数据（Capture stacks）</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 以100次/每秒的频率读取pid=2917的进程的CPU调用堆栈数据，并输出结果到perf.data中</span><br><span class="line">$ perf record -F 100 -p 2917 -g -- sleep 120</span><br><span class="line"># 读取并展示perf.data中的调用栈追踪数据，并输出到out.perf中</span><br><span class="line">$ perf script &gt; out.perf</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>使用FlameGraph提供的工具stackcollapse-perf.pl，将out.perf中的数据转换为可识别的单行数据（Fold stacks）</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./stackcollapse-perf.pl out.perf &gt; out.folded</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>使用FlameGraph提供的工具flamegraph.pl，将out.folded中的数据渲染为svg文件</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./flamegraph.pl out.folded &gt; out.svg</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<ol>
-<li>svg文件用浏览器打开即可看到效果<br> …</li>
-</ol>
-
-      
     </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/25/火焰图实践/" data-id="cjfwc66aq0007hjs6ikxhk7j0" class="article-share-link">Teilen</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FlameGraph/">FlameGraph</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
-
-    </footer>
-  </div>
+</div>
+        <script>
+  // load webfont-loader async, and add callback function
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
   
-</article>
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
 
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntroTags = document.getElementsByClassName('post-intro-tags')[0],
+        postIntroMeat = document.getElementsByClassName('post-intro-meta')[0];
+      if (postIntroTags) {
+        postIntroTags.classList.add('post-fade-in');
+      }
+      if (postIntroMeat) {
+        postIntroMeat.classList.add('post-fade-in');
+      }
+    }
+  }
 
-  
-    <article id="post-lego" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/03/20/lego/" class="article-date">
-  <time datetime="2018-03-20T13:14:35.000Z" itemprop="datePublished">2018-03-20</time>
-</a>
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  async("https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", asyncCb)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main index-page">
     
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/other/">other</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
     
     
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/20/lego/">lego</a>
-    </h1>
-  
+        <article class="index-post">
+            <a class="abstract-title" href = "/2018/03/25/火焰图实践/" >
+                
+                    <span>火焰图实践</span>
+            </a>
+            <div class="abstract-content">
+                说明
+环境：CentOS 6.9
+主要工具：FlameGraph
+目的：检测某进程中各函数的CPU的消耗情况
 
-      </header>
+
+步骤
+安装FlameGraph
+ 1$ git clone git@github.com:brendangregg/FlameGraph.git
+
+查找将要分析的进程pid
+ 1比如：$ ps -ef|grep service_name
+
+使用Linux自带的性能分析工具perf捕获CPU堆栈调用数据（Capture stacks）
+ 1234# 以100次/每秒的频率读取pid=2917的进程的CPU调用堆栈数据，并输出结果到perf.data中$ perf record ...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/03/25</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
     
-    <div class="article-entry" itemprop="articleBody">
-      
-        <img src="/2018/03/20/lego/lego.png" title="lego">
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Python">Python</a>
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "FlameGraph">FlameGraph</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="abstract-title" href = "/2018/03/20/lego/" >
+                
+                    <span>lego</span>
+            </a>
+            <div class="abstract-content">
+                
 
-      
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/03/20</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "lego">lego</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="abstract-title" href = "/2017/11/21/PG热迁移问题/" >
+                
+                    <span>PG热迁移问题解决过程</span>
+            </a>
+            <div class="abstract-content">
+                说明
+迁移过程参考：http://www.jianshu.com/p/2d07339774c0
+遇到问题：当配置完从库，然后启动时发生如下错误：
+ “FATAL:  requested WAL segment 0000000800002A0000000000 has already been removed”
+
+
+原因
+PostgreSQL的流复制的原理是通过传递主机(master)上的wal日志信息到备机(slave)然后恢复，这中间就有一个潜在的问题，如果主机端比较忙，wal日志被覆盖了，而从机可能因为网络或者其他原因没有接收到该日志，就会造成主从不一致，这时主从就断了，并且在主机端...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/11/21</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Postgres">Postgres</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="abstract-title" href = "/2017/10/21/ES数据类型错误问题解决/" >
+                
+                    <span>ES数据类型错误问题解决</span>
+            </a>
+            <div class="abstract-content">
+                this is a custom abstract
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/10/21</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Elasticsearch">Elasticsearch</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    
+    
+        <article class="index-post">
+            <a class="abstract-title" href = "/2017/08/13/ES1.7.1升级5.0.0调研/" >
+                
+                    <span>ES1.7.1升级5.0.0调研</span>
+            </a>
+            <div class="abstract-content">
+                Breaking changes:
+2.0:
+
+默认的发现机制变为单播，多播需要用插件(./bin/plugin install discovery-multicast)    
+配置文件中必须提供一个unicast hosts的列表discovery.zen.ping.unicast.hosts: [ 192.168.1.2,  192.168.1.3 ]
+
+
+2.x默认值只绑定localhost，并且将试图绑定到IPv4和IPv6，但是只有当IPv4和IPv6只有一个可用时，es才能更好的运行；生产环境中需要配置一个newwork.host:
+1bin/elasticsearch -...
+            </div>
+            <div class="abstract-post-meta">
+                <!-- date  -->
+                <div class="abstract-date">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/08/13</span>
+                </div>
+                <!-- tags  -->
+                
+                <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "Elasticsearch">Elasticsearch</a>
+    
+</div>
+                
+            </div>
+        </article>
+    
+    <!-- paginator  -->
+    
+</main>
+            <!-- profile -->
+            
+            <div class="profile">
+    <img class="profile-avatar" src= /avatar/Misaka.jpg >
+    <div class="profile-name">鹿鼎鼎</div>
+    
+    <div class="profile-signature">
+        ...
     </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/20/lego/" data-id="cjfwc66am0006hjs6r000w8z8" class="article-share-link">Teilen</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/lego/">lego</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-PG热迁移问题" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/11/21/PG热迁移问题/" class="article-date">
-  <time datetime="2017-11-21T12:32:01.000Z" itemprop="datePublished">2017-11-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
     
     
-      <header class="article-header">
+    <div class="profile-social">
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/21/PG热迁移问题/">PG热迁移问题解决过程</a>
-    </h1>
-  
-
-      </header>
     
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><ol>
-<li>迁移过程参考：<a href="http://www.jianshu.com/p/2d07339774c0" target="_blank" rel="noopener">http://www.jianshu.com/p/2d07339774c0</a></li>
-<li><p>遇到问题：当配置完从库，然后启动时发生如下错误：</p>
-<p> <em>“FATAL:  requested WAL segment 0000000800002A0000000000 has already been removed”</em></p>
-</li>
-</ol>
-<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><ol>
-<li>PostgreSQL的流复制的原理是通过传递主机(master)上的wal日志信息到备机(slave)然后恢复，这中间就有一个潜在的问题，如果主机端比较忙，wal日志被覆盖了，而从机可能因为网络或者其他原因没有接收到该日志，就会造成主从不一致，这时主从就断了，并且在主机端留下很多的流复制错误信息；通常这种情况不影响主库的使用，但如果有在备机上做一些查询，就需要注意了。出现了这个问题，需要到归档的日志文件里把文件拷贝到备机的pg_xlog下面。 如果主机的wal日志已经循环覆盖了，而且没有做wal的归档，那出现这种情况只能重新做流复制了；</li>
-<li>在重新做流复制的时候，我也调大了postgresql.conf中wal_keep_segments的值（wal_keep_segments=16）</li>
-</ol>
-<ul>
-<li><p>官方对wal_keep_segments的解释：</p>
-<p>  <em>Specifies the minimum number of past log file segments kept in the pg_xlog directory, in case a standby server needs to fetch them for streaming replication. Each segment is normally 16 megabytes. If a standby server connected to the sending server falls behind by more than wal_keep_segments segments, the sending server might remove a WAL segment still needed by the standby, in which case the replication connection will be terminated. Downstream connections will also eventually fail as a result. (However, the standby server can recover by fetching the segment from archive, if WAL archiving is in use.)</em></p>
-<p>  <em>This sets only the minimum number of segments retained in pg_xlog; the system might need to retain more segments for WAL archival or to recover from a checkpoint. If wal_keep_segments is zero (the default), the system doesn’t keep any extra segments for standby purposes, so the number of old WAL segments available to standby servers is a function of the location of the previous checkpoint and status of WAL archiving. This parameter can only be set in the postgresql.conf file or on the server command line.</em></p>
-</li>
-</ul>
+        
+            
+                <a href="mailto:88588774@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
 
-      
     </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/21/PG热迁移问题/" data-id="cjfwc66a20002hjs6en0mlm8y" class="article-share-link">Teilen</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Postgres/">Postgres</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-ES数据类型错误问题解决" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/10/21/ES数据类型错误问题解决/" class="article-date">
-  <time datetime="2017-10-21T15:23:51.000Z" itemprop="datePublished">2017-10-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
     
     
-      <header class="article-header">
+        <div class="friends">
+            <div>FRIENDS</div>
+            
+                
+                    <span>
+                        <a href= //www.baidu.com target="_black">friendA</a>
+                    </span>
+                
+            
+                
+                    <span>
+                        <a href= //www.google.com target="_black">friendB</a>
+                    </span>
+                
+            
+                
+            
+        </div>
+    
+    
+        <div class="about-me">
+            <a href = "/about" >ABOUT ME</a>
+        </div>
+    
+</div>
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/21/ES数据类型错误问题解决/">ES数据类型错误问题解决</a>
-    </h1>
-  
-
-      </header>
     
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="最近sentry频现一个报错："><a href="#最近sentry频现一个报错：" class="headerlink" title="最近sentry频现一个报错："></a>最近sentry频现一个报错：</h4><p><small>TransportError(500, ‘SearchPhaseExecutionException[Failed to execute phase [query], all shards failed; shardFailures {[sTjRYf4YTxS9dwBIKOmpSQ][tale][0]: RemoteTransportException[[bj2-storm03][inet[/10.81.10.15:9300]][indices:data/read/search[phase/query]]]; nested: QueryPhaseExecutionException[[tale][0]: query[filtered(ConstantScore(BooleanFilter(+cache(is_frozen: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x00) +cache(sea_type: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x06))))-&gt;cache(_type:lead)],from[0],size[20],sort[&lt;custom:”update_time”: org.elasticsearch.index.fielddata.fieldcomparator.LongValuesComparatorSource@4cb3edbd&gt;!]: Query Failed [Failed to execute main query]]; nested: ElasticsearchException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: UncheckedExecutionException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: NumberFormatException[Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; }{[nzPbm4moSmafvJAPhBZxFg][tale][1]: QueryPhaseExecutionException[[tale][1]: query[filtered(ConstantScore(BooleanFilter(+cache(is_frozen: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x00) +cache(sea_type: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x06))))-&gt;cache(_type:lead)],from[0],size[20],sort[&lt;custom:”update_time”: org.elasticsearch.index.fielddata.fieldcomparator.LongValuesComparatorSource@e7463d2&gt;!]: Query Failed [Failed to execute main query]]; nested: ElasticsearchException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: UncheckedExecutionException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: NumberFormatException[Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; }{[sTjRYf4YTxS9dwBIKOmpSQ][tale][2]: RemoteTransportException[[bj2-storm03][inet[/10.81.10.15:9300]][indices:data/read/search[phase/query]]]; nested: QueryPhaseExecutionException[[tale][2]: query[filtered(ConstantScore(BooleanFilter(+cache(is_frozen: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x00) +cache(sea_type: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x06))))-&gt;cache(_type:lead)],from[0],size[20],sort[&lt;custom:”update_time”: org.elasticsearch.index.fielddata.fieldcomparator.LongValuesComparatorSource@62817996&gt;!]: Query Failed [Failed to execute main query]]; nested: ElasticsearchException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: UncheckedExecutionException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: NumberFormatException[Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; }{[sTjRYf4YTxS9dwBIKOmpSQ][tale][3]: RemoteTransportException[[bj2-storm03][inet[/10.81.10.15:9300]][indices:data/read/search[phase/query]]]; nested: QueryPhaseExecutionException[[tale][3]: query[filtered(ConstantScore(BooleanFilter(+cache(is_frozen: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x00) +cache(sea_type: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x06))))-&gt;cache(_type:lead)],from[0],size[20],sort[&lt;custom:”update_time”: org.elasticsearch.index.fielddata.fieldcomparator.LongValuesComparatorSource@7de52fa4&gt;!]: Query Failed [Failed to execute main query]]; nested: ElasticsearchException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: UncheckedExecutionException[java.lang.NumberFormatException: Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; nested: NumberFormatException[Invalid shift value in prefixCoded bytes (is encoded value really an INT?)]; }{[sTjRYf4YTxS9dwBIKOmpSQ][tale][4]: RemoteTransportException[[bj2-storm03][inet[/10.81.10.15:9300]][indices:data/read/search[phase/query]]]; nested: QueryPhaseExecutionException[[tale][4]: query[filtered(ConstantScore(BooleanFilter(+cache(is_frozen: \x01\x00\x00\x00\x00\x00\x00\x00\x00\x00…</small></p>
-<p>解决过程如下：</p>
-<ol>
-<li>错误发生场景：<ul>
-<li>搜索lead，并通过“最新更新时间”、“最早更新时间”排序时</li>
-</ul>
-</li>
-<li><p>解决步骤：</p>
-<ol>
-<li><p>根据报错推断，应该是update_time数据格式或类型出现异常</p>
-<ul>
-<li>查看mapping，发现3个doc_type有update_time字段，其中两个是integer，一个是long，而ES要求同名field的type必须一致。<br>幸亏long类型的field竟然没有实际使用，所以以为会愉快的解决问题————直接删除这个field~，悲剧的是，同样的错误继续报。。</li>
-</ul>
-</li>
-<li><p>ES中删除数据时并不是真的删除数据，只是将数据的found标记为false，当下次搜索时，那些found被标记为false的数据还是会被搜索到，只是ES呈现给我们结果时将这部分数据剔除掉，所以继续报相同的错误是理所当然；</p>
-</li>
-<li><p>ES中的数据是存储在一个个segment中的，ES在后台会根据Lucene的合并规则定期进行segment merging操作，被标记删除的数据在segment合并时才会真正删除掉。如果要马上解决这个报错的话，需要手动强制进行segment merging操作（curl -XPOST “<a href="http://localhost:9200/tale/_optimize?only_expunge_deletes=true①&amp;wait_for_completion=true②”），" target="_blank" rel="noopener">http://localhost:9200/tale/_optimize?only_expunge_deletes=true①&amp;wait_for_completion=true②”），</a></p>
-</li>
-<li><p>但是这个操作据说极耗CPU和磁盘I/O，所以在下班后做了该操作，负载确实较之前高了10倍，且整个过程持续了22分钟。至此解决。</p>
-</li>
-</ol>
-</li>
-</ol>
-<p>参考：</p>
-<p><em>①<a href="https://www.elastic.co/guide/en/elasticsearch/reference/1.7/indices-optimize.html#optimize-parameters" target="_blank" rel="noopener">https://www.elastic.co/guide/en/elasticsearch/reference/1.7/indices-optimize.html#optimize-parameters</a></em><br><em>②<a href="https://github.com/elastic/elasticsearch/issues/9638" target="_blank" rel="noopener">https://github.com/elastic/elasticsearch/issues/9638</a></em></p>
+        
+            
+                <a href="mailto:88588774@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
 
-      
     </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/10/21/ES数据类型错误问题解决/" data-id="cjfwc66aj0005hjs6sjkqniw3" class="article-share-link">Teilen</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-ES1.7.1升级5.0.0调研" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/08/13/ES1.7.1升级5.0.0调研/" class="article-date">
-  <time datetime="2017-08-13T07:23:51.000Z" itemprop="datePublished">2017-08-13</time>
-</a>
     
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/13/ES1.7.1升级5.0.0调研/">ES1.7.1升级5.0.0调研</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="Breaking-changes"><a href="#Breaking-changes" class="headerlink" title="Breaking changes:"></a>Breaking changes:</h3><ul>
-<li><p>2.0:</p>
-<ol>
-<li>默认的发现机制变为单播，多播需要用插件(./bin/plugin install discovery-multicast)    <ul>
-<li>配置文件中必须提供一个unicast hosts的列表discovery.zen.ping.unicast.hosts: [ 192.168.1.2,  192.168.1.3 ]</li>
-</ul>
-</li>
-<li><p>2.x默认值只绑定localhost，并且将试图绑定到IPv4和IPv6，但是只有当IPv4和IPv6只有一个可用时，es才能更好的运行；生产环境中需要配置一个newwork.host:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/elasticsearch --network.host 192.168.1.5bin/elasticsearch --network.host _non_loopback_</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Mapping changes:</p>
-<ol>
-<li>动态增加field前，必须通过master node的mapping确认，这样可以避免在同一个index，且不同的shards中，为相同的field(field name相同)增添不同的mapping；这种有冲突的mapping可能会导致es返回错误的结果，且有可能导致进行错误的indexing；这样经常添加新的field，可能导致indexing过程变慢，但安全为上吧；</li>
-<li>直到解决了mapping的冲突，indexing才能继续；废除了Ignore_conflicts，conflict将不能再被忽略；</li>
-<li>field需要通过full path方式来引用，比如必须用person.name，而不是直接用name，这样可以避免混淆；</li>
-<li><p>不同types但具有相同name的field，以前在query中需要通过type.name的形式进行区分，2.x之后只需要在url中增加type就可以了，例如：</p>
-<ul>
-<li><p>1.x:</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET my_index/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;my_type.some_field&quot;: &quot;quick brown fox&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>2.x：</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">GET my_index/my_type/_search </span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;some_field&quot;: &quot;quick brown fox&quot; </span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>field name不要包含“.”；</p>
-</li>
-<li>type name不能以“.”开头；</li>
-<li>type name不能超过255个字符，已存在的、name超过255个字符的type可以在升级后继续使用，但是升级后不能再创建name超过255个字符的type；</li>
-<li>type mapping不能再通过API直接删除，如果要删除，应该重新indexing；如果只需要删除某type下的所有documents，可以通过delete-by-query插件实现；</li>
-</ol>
-</li>
-</ol>
-</li>
-</ul>
-<h3 id="两种方案："><a href="#两种方案：" class="headerlink" title="两种方案："></a>两种方案：</h3><ol>
-<li>先升级到2.4.x，然后在升级到5.0.0</li>
-<li><p>从1.7.1直接升级到5.0.0（因为数据量不大，可选择直接升级，全量build）</p>
-<ol>
-<li><p>当关闭一个node时，es的数据分配进程会立即把这个node的shard复制到集群的其他node，这样会占用大量的I/O，所以可以先关闭默认的分配进程：</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">PUT _cluster/settings</span><br><span class="line">&#123;</span><br><span class="line">    &quot;persistent&quot;: </span><br><span class="line">        &#123;</span><br><span class="line">            &quot;cluster.routing.allocation.enable&quot;: &quot;none”</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>当重建索引完成后，通过如下命令，可以很快的恢复分片：</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POST _flush/synced</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>关闭所有node的es服务，为每个节点升级</p>
-</li>
-</ol>
-</li>
-</ol>
-
-      
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
     </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/08/13/ES1.7.1升级5.0.0调研/" data-id="cjfwc669o0000hjs6w3g2qxf5" class="article-share-link">Teilen</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-
-
-</section>
-        
-          <aside id="sidebar">
-  
+    <!-- 不蒜子  -->
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Kategorien</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/other/">other</a></li></ul>
+    <div class="busuanzi-container">
+        <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span>
+        </span>
     </div>
-  </div>
-
-
-  
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FlameGraph/">FlameGraph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Postgres/">Postgres</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lego/">lego</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/Elasticsearch/" style="font-size: 20px;">Elasticsearch</a> <a href="/tags/FlameGraph/" style="font-size: 10px;">FlameGraph</a> <a href="/tags/Postgres/" style="font-size: 10px;">Postgres</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/lego/" style="font-size: 10px;">lego</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archiv</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">letzter Beitrag</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2018/03/25/火焰图实践/">火焰图实践</a>
-          </li>
-        
-          <li>
-            <a href="/2018/03/20/lego/">lego</a>
-          </li>
-        
-          <li>
-            <a href="/2017/11/21/PG热迁移问题/">PG热迁移问题解决过程</a>
-          </li>
-        
-          <li>
-            <a href="/2017/10/21/ES数据类型错误问题解决/">ES数据类型错误问题解决</a>
-          </li>
-        
-          <li>
-            <a href="/2017/08/13/ES1.7.1升级5.0.0调研/">ES1.7.1升级5.0.0调研</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2018 鲁觐<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
 </footer>
     </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
+    <!-- toc -->
     
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-
-
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-
-<script src="/js/script.js"></script>
-
-
-
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 5 </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2018 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/25</span><a class="archive-post-title" href= "/2018/03/25/火焰图实践/" >火焰图实践</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/20</span><a class="archive-post-title" href= "/2018/03/20/lego/" >lego</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2017 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/21</span><a class="archive-post-title" href= "/2017/11/21/PG热迁移问题/" >PG热迁移问题解决过程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/21</span><a class="archive-post-title" href= "/2017/10/21/ES数据类型错误问题解决/" >ES数据类型错误问题解决</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/13</span><a class="archive-post-title" href= "/2017/08/13/ES1.7.1升级5.0.0调研/" >ES1.7.1升级5.0.0调研</a>
+        </li>
+    
+    </div>
   </div>
-</body>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="Elasticsearch"><span class="iconfont-archer">&#xe606;</span>Elasticsearch</span>
+    
+        <span class="sidebar-tag-name" data-tags="Postgres"><span class="iconfont-archer">&#xe606;</span>Postgres</span>
+    
+        <span class="sidebar-tag-name" data-tags="lego"><span class="iconfont-archer">&#xe606;</span>lego</span>
+    
+        <span class="sidebar-tag-name" data-tags="Python"><span class="iconfont-archer">&#xe606;</span>Python</span>
+    
+        <span class="sidebar-tag-name" data-tags="FlameGraph"><span class="iconfont-archer">&#xe606;</span>FlameGraph</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="other"><span class="iconfont-archer">&#xe60a;</span>other</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: '/',
+        author: '鲁觐'
+    }
+</script>
+    <!-- busuanzi  -->
+    
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+    </body>
 </html>
+
+
