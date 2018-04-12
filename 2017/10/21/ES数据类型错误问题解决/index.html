@@ -14,7 +14,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/10/21/ES数据类型错误问题解决/index.html">
 <meta property="og:site_name" content="鼎鼎小筑">
 <meta property="og:description" content="最近sentry频现一个报错：TransportError(500, ‘SearchPhaseExecutionException[Failed to execute phase [query], all shards failed; shardFailures {[sTjRYf4YTxS9dwBIKOmpSQ][tale][0]: RemoteTransportException[[bj2-st">
-<meta property="og:updated_time" content="2018-04-11T15:45:00.147Z">
+<meta property="og:updated_time" content="2018-04-12T09:42:48.687Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ES数据类型错误问题解决">
 <meta name="twitter:description" content="最近sentry频现一个报错：TransportError(500, ‘SearchPhaseExecutionException[Failed to execute phase [query], all shards failed; shardFailures {[sTjRYf4YTxS9dwBIKOmpSQ][tale][0]: RemoteTransportException[[bj2-st">
@@ -97,7 +97,7 @@
 <ol>
 <li><p>根据报错推断，应该是update_time数据格式或类型出现异常</p>
 <ul>
-<li>查看tale的_mapping，发现lead和lead_taomi的update_time是integer，而opportunity的update_time是long，而ES要求同名field的type必须一致。<br>幸亏opportunity虽然进了ES，但是并没有实际使用，所以以为会愉快的解决问题——直接删除opportunity这个type~，悲剧的是，同样的错误继续报。。</li>
+<li>查看mapping，发现3个doc_type有update_time字段，其中两个是integer，一个是long，而ES要求同名field的type必须一致。<br>幸亏long类型的field竟然没有实际使用，所以以为会愉快的解决问题————直接删除这个field~，悲剧的是，同样的错误继续报。。</li>
 </ul>
 </li>
 <li><p>ES中删除数据时并不是真的删除数据，只是将数据的found标记为false，当下次搜索时，那些found被标记为false的数据还是会被搜索到，只是ES呈现给我们结果时将这部分数据剔除掉，所以继续报相同的错误是理所当然；</p>
@@ -115,7 +115,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/10/21/ES数据类型错误问题解决/" data-id="cjfv9q6hv0002amnuyfr1otz8" class="article-share-link">Teilen</a>
+      <a data-url="http://yoursite.com/2017/10/21/ES数据类型错误问题解决/" data-id="cjfwc66aj0005hjs6sjkqniw3" class="article-share-link">Teilen</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Elasticsearch/">Elasticsearch</a></li></ul>
